@@ -1,0 +1,51 @@
+:root {
+  font-family: Helvetica, Arial, sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  margin: 0;
+}
+body.modal-open {
+  overflow: hidden;
+  padding-right: 15px; /* or use dynamic value */
+}
+a {
+  color: black;
+  text-decoration: underline;
+}
+a:hover {
+  color: blue;
+}
+p {
+  margin: 0;
+}
+button {
+  border-radius: 3px;
+  border: 1px solid lightgray;
+  padding: 3px 5px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  color: black;
+}
+button:hover {
+  border-color: blue;
+}
+button:focus,
+button:focus-visible {
+  outline: none;
+}
+
+.overlay-backdrop.middlebrow img {
+  border: solid 1px rgba(0, 0, 0, 0.1);
+}
+p {
+  line-height: normal;
+}
