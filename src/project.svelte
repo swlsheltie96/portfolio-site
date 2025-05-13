@@ -49,7 +49,7 @@
     if (activeProject && activeProject.project === project.project) {
       activeProject = null;
     } else {
-      plausible(`${project}`, { props: { project: project } });
+      plausible(`Project clicked: ${project.project}`);
       activeProject = project;
     }
   }
