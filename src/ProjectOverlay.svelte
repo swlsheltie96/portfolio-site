@@ -74,7 +74,10 @@
     on:scroll={handleScroll}
   >
     <div class="bkg-opacity"></div>
+
     <div class="overlay-scroll" on:click|stopPropagation>
+      <div class="scroll-indicator" {style}>Scroll <span class="arrow">↓</span></div>
+
       <div
         class="info"
         style="--max-width: {activeProject.desktop_max_width
@@ -263,6 +266,28 @@
       position: sticky;
       top: calc(40px + var(--top) * 4);
       margin-bottom: 0;
+    }
+  }
+
+  .scroll-indicator {
+    z-index: 3;
+    text-align: center;
+    position: relative;
+    padding-bottom: 10px;
+  }
+
+  .arrow {
+    display: inline-block;
+    animation: bounce 1.5s infinite;
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
     }
   }
 </style>

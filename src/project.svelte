@@ -48,9 +48,11 @@
   function selectProject(project) {
     if (activeProject && activeProject.project === project.project) {
       activeProject = null;
+      window.location.hash = "";
     } else {
       plausible(`Project clicked: ${project.project}`);
       activeProject = project;
+      window.location.hash = project.project;
     }
   }
 
@@ -68,10 +70,29 @@
     const url =
       "https://docs.google.com/document/d/e/2PACX-1vQrYjQShcwtouGPacJE2AnNMltgw2km9dzHEhnf3y5vW4KAsynpT-zc2SWuRaDcW2KH6eBHkeXJ3oOH/pub";
     text_data = await fetchArchieml(url);
+
+    // Check for hash on mount
+    if (window.location.hash) {
+      const projectId = window.location.hash.slice(1); // Remove the # symbol
+      if (projectId === project.project) {
+        activeProject = project;
+      }
+    }
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", () => {
+      const projectId = window.location.hash.slice(1);
+      if (projectId === project.project) {
+        activeProject = project;
+      } else if (!projectId) {
+        activeProject = null;
+      }
+    });
   });
 
   onDestroy(() => {
     window.removeEventListener("keydown", handleKeydown);
+    window.removeEventListener("hashchange", () => {});
   });
 
   $: {
