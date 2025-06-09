@@ -106,9 +106,35 @@
   if (media.type) {
     if (media.type == "image") {
       type = "image";
+      console.log(media);
       media = media.media;
     }
   }
+
+  // Reactive statement to properly handle media prop
+  $: mediaUrl = (() => {
+    if (!media) return "";
+
+    // If media is an object with type and media properties
+    if (typeof media === "object" && media !== null) {
+      if (media.type === "image") {
+        type = "image";
+        return media.media || "";
+      }
+      // If it's an object but doesn't have the expected structure, try to use it directly
+      return media.toString();
+    }
+
+    // If media is already a string
+    if (typeof media === "string") {
+      return media;
+    }
+
+    // Fallback
+    return "";
+  })();
+
+  $: fullUrl = mediaUrl ? `https://pub-de90c051aa034ae4942bc22f6c3686f0.r2.dev/${mediaUrl}` : "";
 </script>
 
 {#if type === "video"}
@@ -117,7 +143,7 @@
       {#if shouldLoad}
         <video
           bind:this={videoElement}
-          src="https://pub-de90c051aa034ae4942bc22f6c3686f0.r2.dev/{media}"
+          src={fullUrl}
           autoplay
           muted
           loop
@@ -159,11 +185,7 @@
   </div>
 {:else if type === "image"}
   <div class="item-content media {device}">
-    <img
-      src="https://pub-de90c051aa034ae4942bc22f6c3686f0.r2.dev/{media}"
-      alt=""
-      style="width: 100%; height: auto;"
-    />
+    <img src={fullUrl} alt="" style="width: 100%; height: auto;" />
   </div>
 {/if}
 
