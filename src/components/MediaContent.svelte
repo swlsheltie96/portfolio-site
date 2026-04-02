@@ -193,7 +193,7 @@
   .media {
     width: 100%;
     max-width: 400px;
-    margin-left: auto;
+    /* margin-left: auto; */
   }
   .desktop {
     max-width: 100%;

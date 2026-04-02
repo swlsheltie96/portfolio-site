@@ -1,5 +1,6 @@
 <script>
-  import { fade } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
+  import { cubicOut, cubicIn } from "svelte/easing";
   import { fetchArchieml } from "./utils/loadAML.js";
   import { onMount } from "svelte";
   import Papa from "papaparse";
@@ -73,11 +74,9 @@
     on:click={clearSelection}
     on:scroll={handleScroll}
   >
-    <div class="bkg-opacity"></div>
+    <div class="bkg-opacity" transition:fade={{ duration: 300 }}></div>
 
-    <div class="overlay-scroll" on:click|stopPropagation>
-      <div class="scroll-indicator" {style}>Scroll <span class="arrow">↓</span></div>
-
+    <div class="overlay-scroll" in:fly={{ y: 600, duration: 350, opacity: 1, easing: cubicOut }} out:fly={{ y: 600, duration: 350, opacity: 1, easing: cubicIn }} on:click|stopPropagation>
       <div
         class="info"
         style="--max-width: {activeProject.desktop_max_width
@@ -101,6 +100,8 @@
             >
           </div>
         </div>
+                <!-- <div class="scroll-indicator" {style}>Scroll <span class="arrow">↓</span></div> -->
+
         <div class="project-description">
           {#each currentProjectSections as section}
             {#if section.type === "text"}
@@ -133,14 +134,13 @@
   .overlay-backdrop {
     position: fixed;
     inset: 0;
-    overflow-y: auto;
     z-index: 2;
   }
 
   .overlay {
     position: fixed;
     top: calc(100vh - 40px - (14px * 4));
-    left: 0;
+    right: 0;
     width: 100%;
     background: white;
     color: black;
@@ -150,18 +150,22 @@
     font-size: 12px;
     border: 1px solid black;
 
-    margin-left: 20px;
+    margin-right: 20px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     /* width: var(--max-width); */
     width: calc(100% - 40px);
+    max-width: 850px;
   }
 
   .overlay-scroll {
-    /* min-height: 100vh; */
-    justify-content: center;
-    margin-top: calc(100vh - 40px - (14px * 4));
-    /* width: 100%; */
+    position: fixed;
+    top: 20px;
+    bottom: 0;
+    right: 0;
+    width: calc(100% - 40px);
+    max-width: 850px;
+    overflow-y: auto;
   }
 
   .overlay-scroll .info {
@@ -175,20 +179,23 @@
     box-sizing: border-box;
 
     border-top: 1px solid black;
+    min-height: calc(100vh - 20px);
   }
   @media (min-width: 740px) {
     .overlay-scroll .info {
-      margin-left: 20px;
+      margin-left: auto;
+      margin-right: 20px;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       width: calc(100% - 40px);
+      max-width: 850px;
 
       border-left: 1px solid black;
       border-right: 1px solid black;
     }
   }
   .overlay .info {
-    max-width: 1200px;
+    max-width: 850px;
     margin: 0;
   }
 
@@ -199,14 +206,14 @@
     background-color: white;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.6;
+    opacity: 0.8;
   }
 
   .project-header {
     display: flex;
     justify-content: space-between;
-    position: sticky;
-    top: 0;
+    /* position: sticky;
+    top: 0; */
     /* background-color: white; */
     padding-top: 20px;
     z-index: 1;
@@ -244,7 +251,7 @@
     margin-bottom: 0;
   }
   .single.media {
-    margin-left: auto;
+    /* margin-left: auto; */
   }
   .single.media.desktop {
     width: 100%;
@@ -256,24 +263,10 @@
   .diptych-item:nth-child(2) {
     margin-bottom: 20px;
   }
-  @media (min-width: 740px) {
-    .diptych-item {
-      width: 50%;
-      display: inline-block;
-    }
-    .diptych-item:first-child {
-      float: left;
-      position: sticky;
-      top: calc(40px + var(--top) * 4);
-      margin-bottom: 0;
-    }
-  }
 
   .scroll-indicator {
     z-index: 3;
-    text-align: center;
-    position: relative;
-    padding-bottom: 10px;
+    margin-top: 20px;
   }
 
   .arrow {
