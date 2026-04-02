@@ -162,10 +162,16 @@
     position: fixed;
     top: 20px;
     bottom: 0;
+    left: 0;
     right: 0;
-    width: calc(100% - 40px);
-    max-width: 850px;
     overflow-y: auto;
+  }
+  @media (min-width: 740px) {
+    .overlay-scroll {
+      left: auto;
+      width: calc(100% - 40px);
+      max-width: 850px;
+    }
   }
 
   .overlay-scroll .info {
