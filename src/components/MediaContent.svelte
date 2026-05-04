@@ -13,6 +13,7 @@
   let isLoading = true;
   let shouldLoad = false;
   let container;
+  let classes;
   $: style = `font-size: ${$fontStyle.size}px;
               font-weight: ${$fontStyle.bold ? "bold" : "normal"};
               font-style: ${$fontStyle.italic ? "italic" : "normal"};
@@ -102,14 +103,23 @@
     isPlaying = !videoElement.paused;
   }
 
-  // console.log(media);
+  console.log(media);
   if (media.type) {
+    console.log(media.type, media.class)
+    if (media.class) {
+classes= media.class
+console.log(classes)
+}
     if (media.type == "image") {
       type = "image";
-      console.log(media);
+      // console.log(media);
       media = media.media;
+      // console.log(media.type)
+   
     }
   }
+
+
 
   // Reactive statement to properly handle media prop
   $: mediaUrl = (() => {
@@ -184,7 +194,7 @@
     </div>
   </div>
 {:else if type === "image"}
-  <div class="item-content media {device}">
+  <div class="item-content media {device} {classes}">
     <img src={fullUrl} alt="" style="width: 100%; height: auto;" />
   </div>
 {/if}
@@ -194,6 +204,9 @@
     width: 100%;
     max-width: 400px;
     /* margin-left: auto; */
+  }
+  .large {
+    max-width: unset;
   }
   .desktop {
     max-width: 100%;

@@ -28,6 +28,7 @@
         if (project) {
           foundProject = project;
           project_data = foundProject;
+          // console.log(project_data)
           break;
         }
       }
