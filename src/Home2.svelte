@@ -1,5 +1,8 @@
 <script>
   import { onMount, tick } from "svelte";
+  import { crossfade } from "svelte/transition";
+
+  const [send, receive] = crossfade({ duration: 400 });
 
   const minWidth = 200;
 
@@ -32,6 +35,38 @@
   let nsVisible = true;
   let rightOverpull = 0;
   const overpullThreshold = 150;
+
+  let tapZoneDesktopEl;
+  let tapZoneMobileEl;
+  let clickStep = 0;
+  let emailPos = { x: 0, y: 0 };
+  let arenaPos = { x: 0, y: 0 };
+  let instagramPos = { x: 0, y: 0 };
+
+  function registerClick(zoneEl, e) {
+    if (!zoneEl) return;
+    const rect = zoneEl.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const nextStep = clickStep >= 3 ? 0 : clickStep + 1;
+    if (nextStep === 1) emailPos = { x, y };
+    else if (nextStep === 2) arenaPos = { x, y };
+    else if (nextStep === 3) instagramPos = { x, y };
+    clickStep = nextStep;
+  }
+
+  function handleDesktopTapZoneClick(e) {
+    registerClick(tapZoneDesktopEl, e);
+  }
+
+  function handleMobileTapZoneClick(e) {
+    registerClick(tapZoneMobileEl, e);
+  }
+
+  function resetTapZone() {
+    clickStep = 0;
+  }
 
   function animateMobileFill(target) {
     if (mobileFillInterval) clearInterval(mobileFillInterval);
@@ -203,6 +238,8 @@
     updateMeasurements();
     window.addEventListener("resize", updateMeasurements);
     window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("wheel", resetTapZone, { passive: true });
+    window.addEventListener("scroll", resetTapZone, { passive: true });
 
     await tick();
     if (isDesktop) {
@@ -214,6 +251,8 @@
     return () => {
       window.removeEventListener("resize", updateMeasurements);
       window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("wheel", resetTapZone);
+      window.removeEventListener("scroll", resetTapZone);
       if (introInterval) clearInterval(introInterval);
       if (mobileFillInterval) clearInterval(mobileFillInterval);
     };
@@ -249,17 +288,121 @@
         </p></div
       >
 
+      <div
+        class="tap-zone tap-zone-desktop"
+        bind:this={tapZoneDesktopEl}
+        on:click={handleDesktopTapZoneClick}
+      >
+        {#if isDesktop && clickStep >= 1}
+          <a
+            class="floating-label"
+            href="mailto:shannon.w.lin424@gmail.com"
+            style="left: {emailPos.x}px; top: {emailPos.y}px;"
+            in:receive={{ key: "email-desktop" }}
+            out:send={{ key: "email-desktop" }}>Email</a
+          >
+        {/if}
+        {#if isDesktop && clickStep >= 2}
+          <a
+            class="floating-label"
+            href="https://www.are.na/shannon-lin/channels"
+            style="left: {arenaPos.x}px; top: {arenaPos.y}px;"
+            in:receive={{ key: "arena-desktop" }}
+            out:send={{ key: "arena-desktop" }}>Are.na</a
+          >
+        {/if}
+        {#if isDesktop && clickStep >= 3}
+          <a
+            class="floating-label"
+            href="https://www.instagram.com/swl_at_gmail_dot_com/"
+            style="left: {instagramPos.x}px; top: {instagramPos.y}px;"
+            in:receive={{ key: "instagram-desktop" }}
+            out:send={{ key: "instagram-desktop" }}>Instagram</a
+          >
+        {/if}
+      </div>
+
       <footer class="footer-desktop">
-        <a href="mailto:shannon.w.lin424@gmail.com">Email</a>
-        <a href="https://www.are.na/shannon-lin/channels">Are.na</a>
-        <a href="https://www.instagram.com/swl_at_gmail_dot_com/">Instagram</a>
+        {#if isDesktop && clickStep < 1}
+          <a
+            href="mailto:shannon.w.lin424@gmail.com"
+            in:receive={{ key: "email-desktop" }}
+            out:send={{ key: "email-desktop" }}>Email</a
+          >
+        {/if}
+        {#if isDesktop && clickStep < 2}
+          <a
+            href="https://www.are.na/shannon-lin/channels"
+            in:receive={{ key: "arena-desktop" }}
+            out:send={{ key: "arena-desktop" }}>Are.na</a
+          >
+        {/if}
+        {#if isDesktop && clickStep < 3}
+          <a
+            href="https://www.instagram.com/swl_at_gmail_dot_com/"
+            in:receive={{ key: "instagram-desktop" }}
+            out:send={{ key: "instagram-desktop" }}>Instagram</a
+          >
+        {/if}
       </footer>
     </div>
 
+    <div
+      class="tap-zone tap-zone-mobile"
+      bind:this={tapZoneMobileEl}
+      on:click={handleMobileTapZoneClick}
+    >
+      {#if !isDesktop && clickStep >= 1}
+        <a
+          class="floating-label"
+          href="mailto:shannon.w.lin424@gmail.com"
+          style="left: {emailPos.x}px; top: {emailPos.y}px;"
+          in:receive={{ key: "email-mobile" }}
+          out:send={{ key: "email-mobile" }}>Email</a
+        >
+      {/if}
+      {#if !isDesktop && clickStep >= 2}
+        <a
+          class="floating-label"
+          href="#"
+          style="left: {arenaPos.x}px; top: {arenaPos.y}px;"
+          in:receive={{ key: "arena-mobile" }}
+          out:send={{ key: "arena-mobile" }}>Are.na</a
+        >
+      {/if}
+      {#if !isDesktop && clickStep >= 3}
+        <a
+          class="floating-label"
+          href="#"
+          style="left: {instagramPos.x}px; top: {instagramPos.y}px;"
+          in:receive={{ key: "instagram-mobile" }}
+          out:send={{ key: "instagram-mobile" }}>Instagram</a
+        >
+      {/if}
+    </div>
+
     <footer class="footer-mobile">
-      <a href="mailto:shannon.w.lin424@gmail.com">Email</a>
-      <a href="#">Are.na</a>
-      <a href="#">Instagram</a>
+      {#if !isDesktop && clickStep < 1}
+        <a
+          href="mailto:shannon.w.lin424@gmail.com"
+          in:receive={{ key: "email-mobile" }}
+          out:send={{ key: "email-mobile" }}>Email</a
+        >
+      {/if}
+      {#if !isDesktop && clickStep < 2}
+        <a
+          href="#"
+          in:receive={{ key: "arena-mobile" }}
+          out:send={{ key: "arena-mobile" }}>Are.na</a
+        >
+      {/if}
+      {#if !isDesktop && clickStep < 3}
+        <a
+          href="#"
+          in:receive={{ key: "instagram-mobile" }}
+          out:send={{ key: "instagram-mobile" }}>Instagram</a
+        >
+      {/if}
     </footer>
 
     <video
@@ -342,7 +485,23 @@
     flex-direction: column;
     flex: 0 0 auto;
     gap: 30px;
-    margin-bottom: auto;
+  }
+
+  .tap-zone {
+    position: relative;
+    cursor: pointer;
+  }
+  .tap-zone-desktop {
+    display: none;
+  }
+  .tap-zone-mobile {
+    flex: 1;
+    min-height: 0;
+  }
+  .floating-label {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
   }
   .text-main p {
     margin-bottom: 10px;
@@ -407,8 +566,14 @@
       display: flex;
       flex-direction: column;
       flex: 0 1 auto;
-      justify-content: space-between;
-      margin-bottom: 0;
+    }
+    .tap-zone-desktop {
+      display: block;
+      flex: 1;
+      min-height: 0;
+    }
+    .tap-zone-mobile {
+      display: none;
     }
     .placeholder {
       width: auto;
