@@ -440,6 +440,7 @@
   :global(body) {
     font-family: Helvetica, Arial, sans-serif;
     color: black;
+    /* font-weight: bold; */
     background-color: white;
     /* padding: 20px; */
   }
@@ -524,6 +525,7 @@
     flex: 0 0 auto;
     width: 100%;
     aspect-ratio: 16 / 9;
+    overflow: hidden;
   }
   /* footer */
   .footer-mobile {
@@ -591,6 +593,7 @@
     }
     .text-main {
       padding-top: 0;
+      padding-right: 10px;
     }
     .tap-zone-desktop {
       display: block;
@@ -604,6 +607,7 @@
       width: auto;
       aspect-ratio: auto;
       height: auto;
+      min-height: 80vh;
       max-height: 85vh;
     }
 
