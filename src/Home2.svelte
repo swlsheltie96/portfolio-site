@@ -604,7 +604,7 @@
       width: auto;
       aspect-ratio: auto;
       height: auto;
-      max-height: 70vh;
+      max-height: 85vh;
     }
 
     .footer-mobile {
