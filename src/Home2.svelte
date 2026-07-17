@@ -13,24 +13,51 @@
 
   let offset = 0;
   let isDesktop = false;
-  let shanRevealed = false;
 
   let shanDesktopEl;
-  let shanBaseWidth = 0;
   let nCharWidth = 0;
   let measureCanvas;
+
+  let nonEl;
+  let nonBaseWidth = 0;
+  let studioSuffixWidth = 0;
+  let mobileNCharWidth = 0;
+  let mobileNCount = 0;
+  let mobileFilled = false;
+  let mobileFillInterval;
 
   let typedCount = 0;
   let introPlaying = true;
   let introInterval;
   let nsVisible = true;
+  let rightOverpull = 0;
+  const overpullThreshold = 150;
 
-  function toggleShan() {
-    shanRevealed = !shanRevealed;
+  function animateMobileFill(target) {
+    if (mobileFillInterval) clearInterval(mobileFillInterval);
+    const start = mobileNCount;
+    if (start === target) return;
+    const step = target > start ? 1 : -1;
+    let current = start;
+    mobileFillInterval = setInterval(() => {
+      current += step;
+      mobileNCount = current;
+      if (current === target) {
+        clearInterval(mobileFillInterval);
+      }
+    }, 45);
+  }
+
+  function toggleMobileFill() {
+    if (isDesktop) return;
+    mobileFilled = !mobileFilled;
+    animateMobileFill(mobileFilled ? mobileFillTarget : 0);
   }
 
   function playIntro(target) {
+    if (introInterval) clearInterval(introInterval);
     typedCount = 0;
+    introPlaying = true;
     if (target <= 0) {
       introPlaying = false;
       return;
@@ -57,8 +84,16 @@
     if (!shanDesktopEl) return;
     const style = getComputedStyle(shanDesktopEl);
     const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    shanBaseWidth = measureTextWidth("Shan", font);
     nCharWidth = measureTextWidth("n", font);
+  }
+
+  function updateMobileFontMeasurements() {
+    if (!nonEl) return;
+    const style = getComputedStyle(nonEl);
+    const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    nonBaseWidth = measureTextWidth("non", font);
+    studioSuffixWidth = measureTextWidth(" Studio", font);
+    mobileNCharWidth = measureTextWidth("n", font);
   }
 
   function clamp(val, min, max) {
@@ -75,6 +110,7 @@
     if (wordmarkEl) wordmarkPadding = paddingX(wordmarkEl);
     isDesktop = window.innerWidth >= 740;
     updateFontMeasurements();
+    updateMobileFontMeasurements();
   }
 
   $: availableWidth = Math.max(containerWidth - horizontalPadding, 0);
@@ -100,33 +136,67 @@
   $: studioStyle =
     isDesktop && wordmarkAvailableWidth ? `flex: 0 0 ${studioWidth}px` : "";
 
-  $: if (wordmarkAvailableWidth) {
-    if (shannonWidth >= wordmarkAvailableWidth - minWidth) {
-      nsVisible = false;
-    } else if (shannonWidth <= minWidth) {
+  $: if (wordmarkAvailableWidth && shannonWidth <= minWidth) {
+    rightOverpull = 0;
+    if (!nsVisible) {
       nsVisible = true;
+      const target =
+        isDesktop && nCharWidth
+          ? Math.max(0, Math.floor(shannonWidth / nCharWidth))
+          : 0;
+      playIntro(target);
     }
   }
 
   $: fillCount =
     isDesktop && nCharWidth && nsVisible
-      ? Math.max(0, Math.floor((shannonWidth - shanBaseWidth) / nCharWidth))
+      ? Math.max(0, Math.floor(shannonWidth / nCharWidth))
       : 0;
-  $: shanDesktopText =
-    "Shan" + "n".repeat(introPlaying ? typedCount : fillCount);
+  $: shanDesktopText = "n".repeat(introPlaying ? typedCount : fillCount);
+
+  $: mobileFillTarget =
+    !isDesktop && mobileNCharWidth && wordmarkAvailableWidth
+      ? Math.max(
+          0,
+          Math.floor(
+            (wordmarkAvailableWidth - nonBaseWidth - studioSuffixWidth) /
+              mobileNCharWidth,
+          ),
+        )
+      : 0;
+  $: nonText = "n".repeat(mobileNCount) + "non";
 
   function handleWheel(e) {
     if (!isDesktop || !availableWidth) return;
     e.preventDefault();
-    if (introPlaying) {
-      clearInterval(introInterval);
-      introPlaying = false;
+
+    const atRightEdge =
+      wordmarkAvailableWidth &&
+      shannonWidth >= wordmarkAvailableWidth - minWidth;
+
+    if (atRightEdge && e.deltaY > 0) {
+      rightOverpull += e.deltaY;
+      if (rightOverpull >= overpullThreshold) {
+        nsVisible = false;
+      }
+    } else {
+      rightOverpull = 0;
     }
-    offset = clamp(
+
+    const newOffset = clamp(
       offset + e.deltaY,
       minWidth - half,
       availableWidth - minWidth - half,
     );
+
+    if (newOffset === offset) return;
+
+    if (introPlaying) {
+      clearInterval(introInterval);
+      introPlaying = false;
+    }
+
+    offset = newOffset;
   }
 
   onMount(async () => {
@@ -145,21 +215,21 @@
       window.removeEventListener("resize", updateMeasurements);
       window.removeEventListener("wheel", handleWheel);
       if (introInterval) clearInterval(introInterval);
+      if (mobileFillInterval) clearInterval(mobileFillInterval);
     };
   });
 </script>
 
 <div class="main">
   <div class="wordmark" bind:this={wordmarkEl} bind:clientWidth={wordmarkWidth}>
-    <div class="shannon" class:revealed={shanRevealed} style={shannonStyle}>
+    <div class="shannon" style={shannonStyle}>
       <span class="shan-desktop" bind:this={shanDesktopEl}
         >{shanDesktopText}</span
       >
-      <span class="shan-mobile">Shannon Lin</span>
     </div>
 
-    <div class="studio" style={studioStyle} on:click={toggleShan}>
-      <span class="non">non</span>
+    <div class="studio" style={studioStyle} on:click={toggleMobileFill}>
+      <span class="non" bind:this={nonEl}>{nonText}</span>
       <span class="studio">Studio</span>
     </div>
   </div>
@@ -168,13 +238,13 @@
     <div class="text-column" style={textStyle}>
       <div class="text-main"
         ><p>
-          A digital and physical design practice. Current and past collaborators
-          include The New York Times, Netflix, The Atlantic, Base Design, Porto
-          Rocha, The Office Arts, The Canada Pavilion at the Venice Biennial,
-          Middlebrow Podcast, Feed Me...
+          A digital and physical design practice by Shannon Lin. Current and
+          past collaborators include The New York Times, Netflix, The Atlantic,
+          Base Design, Porto Rocha, The Office Arts, The Canada Pavilion at the
+          Venice Biennial, Middlebrow Podcast, Feed Me...
         </p>
         <p>
-          web design & development, art direction, branding, graphic design,
+          Web design & development, art direction, branding, graphic design,
           interaction design, creative strategy and more.
         </p></div
       >
@@ -186,6 +256,12 @@
       </footer>
     </div>
 
+    <footer class="footer-mobile">
+      <a href="mailto:shannon.w.lin424@gmail.com">Email</a>
+      <a href="#">Are.na</a>
+      <a href="#">Instagram</a>
+    </footer>
+
     <video
       class="placeholder"
       style={placeholderStyle}
@@ -195,12 +271,6 @@
       loop
       playsinline
     ></video>
-
-    <footer class="footer-mobile">
-      <a href="mailto:shannon.w.lin424@gmail.com">Email</a>
-      <a href="#">Are.na</a>
-      <a href="#">Instagram</a>
-    </footer>
   </main>
 </div>
 
@@ -251,14 +321,8 @@
   .shannon {
     display: none;
   }
-  .shannon.revealed {
-    display: block;
-  }
   .shan-desktop {
     display: none;
-  }
-  .shan-mobile {
-    display: inline;
   }
   .studio {
     cursor: pointer;
@@ -326,12 +390,10 @@
       vertical-align: top;
       max-width: 100%;
     }
-    .shan-mobile {
-      display: none;
-    }
     .studio {
       display: flex;
       justify-content: space-between;
+      cursor: default;
     }
 
     .content {
