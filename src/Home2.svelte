@@ -325,6 +325,7 @@
       <footer class="footer-desktop">
         {#if isDesktop && clickStep < 1}
           <a
+            class="email-link"
             href="mailto:shannon.w.lin424@gmail.com"
             in:receive={{ key: "email-desktop" }}
             out:send={{ key: "email-desktop" }}>Email</a
@@ -332,6 +333,7 @@
         {/if}
         {#if isDesktop && clickStep < 2}
           <a
+            class="arena-link"
             href="https://www.are.na/shannon-lin/channels"
             in:receive={{ key: "arena-desktop" }}
             out:send={{ key: "arena-desktop" }}>Are.na</a
@@ -339,6 +341,7 @@
         {/if}
         {#if isDesktop && clickStep < 3}
           <a
+            class="instagram-link"
             href="https://www.instagram.com/swl_at_gmail_dot_com/"
             in:receive={{ key: "instagram-desktop" }}
             out:send={{ key: "instagram-desktop" }}>Instagram</a
@@ -384,6 +387,7 @@
     <footer class="footer-mobile">
       {#if !isDesktop && clickStep < 1}
         <a
+          class="email-link"
           href="mailto:shannon.w.lin424@gmail.com"
           in:receive={{ key: "email-mobile" }}
           out:send={{ key: "email-mobile" }}>Email</a
@@ -391,6 +395,7 @@
       {/if}
       {#if !isDesktop && clickStep < 2}
         <a
+          class="arena-link"
           href="#"
           in:receive={{ key: "arena-mobile" }}
           out:send={{ key: "arena-mobile" }}>Are.na</a
@@ -398,6 +403,7 @@
       {/if}
       {#if !isDesktop && clickStep < 3}
         <a
+          class="instagram-link"
           href="#"
           in:receive={{ key: "instagram-mobile" }}
           out:send={{ key: "instagram-mobile" }}>Instagram</a
@@ -503,6 +509,9 @@
     transform: translate(-50%, -50%);
     white-space: nowrap;
   }
+  .text-main {
+    padding-top: 10px;
+  }
   .text-main p {
     margin-bottom: 10px;
   }
@@ -519,13 +528,26 @@
   /* footer */
   .footer-mobile {
     grid-area: footer;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     flex: 0 0 auto;
     margin-top: 30px;
+    padding-bottom: 10px;
   }
   .footer-desktop {
     display: none;
+  }
+  .email-link {
+    grid-column: 1;
+    justify-self: start;
+  }
+  .arena-link {
+    grid-column: 2;
+    justify-self: center;
+  }
+  .instagram-link {
+    grid-column: 3;
+    justify-self: end;
   }
   @media (min-width: 740px) {
     .main {
@@ -567,6 +589,9 @@
       flex-direction: column;
       flex: 0 1 auto;
     }
+    .text-main {
+      padding-top: 0;
+    }
     .tap-zone-desktop {
       display: block;
       flex: 1;
@@ -579,7 +604,7 @@
       width: auto;
       aspect-ratio: auto;
       height: auto;
-      min-height: 80vh;
+      max-height: 70vh;
     }
 
     .footer-mobile {
@@ -587,8 +612,8 @@
       display: none;
     }
     .footer-desktop {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       padding-right: 10px;
     }
   }
