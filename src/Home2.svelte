@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
 
   const minWidth = 200;
 
@@ -15,8 +15,50 @@
   let isDesktop = false;
   let shanRevealed = false;
 
+  let shanDesktopEl;
+  let shanBaseWidth = 0;
+  let nCharWidth = 0;
+  let measureCanvas;
+
+  let typedCount = 0;
+  let introPlaying = true;
+  let introInterval;
+  let nsVisible = true;
+
   function toggleShan() {
     shanRevealed = !shanRevealed;
+  }
+
+  function playIntro(target) {
+    typedCount = 0;
+    if (target <= 0) {
+      introPlaying = false;
+      return;
+    }
+    let i = 0;
+    introInterval = setInterval(() => {
+      i++;
+      typedCount = i;
+      if (i >= target) {
+        clearInterval(introInterval);
+        introPlaying = false;
+      }
+    }, 45);
+  }
+
+  function measureTextWidth(text, font) {
+    if (!measureCanvas) measureCanvas = document.createElement("canvas");
+    const ctx = measureCanvas.getContext("2d");
+    ctx.font = font;
+    return ctx.measureText(text).width;
+  }
+
+  function updateFontMeasurements() {
+    if (!shanDesktopEl) return;
+    const style = getComputedStyle(shanDesktopEl);
+    const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    shanBaseWidth = measureTextWidth("Shan", font);
+    nCharWidth = measureTextWidth("n", font);
   }
 
   function clamp(val, min, max) {
@@ -32,6 +74,7 @@
     if (contentEl) horizontalPadding = paddingX(contentEl);
     if (wordmarkEl) wordmarkPadding = paddingX(wordmarkEl);
     isDesktop = window.innerWidth >= 740;
+    updateFontMeasurements();
   }
 
   $: availableWidth = Math.max(containerWidth - horizontalPadding, 0);
@@ -40,8 +83,7 @@
     ? clamp(half + offset, minWidth, availableWidth - minWidth)
     : 0;
   $: placeholderWidth = availableWidth ? availableWidth - textWidth : 0;
-  $: textStyle =
-    isDesktop && availableWidth ? `flex: 0 0 ${textWidth}px` : "";
+  $: textStyle = isDesktop && availableWidth ? `flex: 0 0 ${textWidth}px` : "";
   $: placeholderStyle =
     isDesktop && availableWidth ? `flex: 0 0 ${placeholderWidth}px` : "";
 
@@ -58,9 +100,28 @@
   $: studioStyle =
     isDesktop && wordmarkAvailableWidth ? `flex: 0 0 ${studioWidth}px` : "";
 
+  $: if (wordmarkAvailableWidth) {
+    if (shannonWidth >= wordmarkAvailableWidth - minWidth) {
+      nsVisible = false;
+    } else if (shannonWidth <= minWidth) {
+      nsVisible = true;
+    }
+  }
+
+  $: fillCount =
+    isDesktop && nCharWidth && nsVisible
+      ? Math.max(0, Math.floor((shannonWidth - shanBaseWidth) / nCharWidth))
+      : 0;
+  $: shanDesktopText =
+    "Shan" + "n".repeat(introPlaying ? typedCount : fillCount);
+
   function handleWheel(e) {
     if (!isDesktop || !availableWidth) return;
     e.preventDefault();
+    if (introPlaying) {
+      clearInterval(introInterval);
+      introPlaying = false;
+    }
     offset = clamp(
       offset + e.deltaY,
       minWidth - half,
@@ -68,13 +129,22 @@
     );
   }
 
-  onMount(() => {
+  onMount(async () => {
     updateMeasurements();
     window.addEventListener("resize", updateMeasurements);
     window.addEventListener("wheel", handleWheel, { passive: false });
+
+    await tick();
+    if (isDesktop) {
+      playIntro(fillCount);
+    } else {
+      introPlaying = false;
+    }
+
     return () => {
       window.removeEventListener("resize", updateMeasurements);
       window.removeEventListener("wheel", handleWheel);
+      if (introInterval) clearInterval(introInterval);
     };
   });
 </script>
@@ -82,7 +152,9 @@
 <div class="main">
   <div class="wordmark" bind:this={wordmarkEl} bind:clientWidth={wordmarkWidth}>
     <div class="shannon" class:revealed={shanRevealed} style={shannonStyle}>
-      <span class="shan-desktop">Shan</span>
+      <span class="shan-desktop" bind:this={shanDesktopEl}
+        >{shanDesktopText}</span
+      >
       <span class="shan-mobile">Shannon Lin</span>
     </div>
 
@@ -96,7 +168,7 @@
     <div class="text-column" style={textStyle}>
       <div class="text-main"
         ><p>
-          a digital and physical design practice. Current and past collaborators
+          A digital and physical design practice. Current and past collaborators
           include The New York Times, Netflix, The Atlantic, Base Design, Porto
           Rocha, The Office Arts, The Canada Pavilion at the Venice Biennial,
           Middlebrow Podcast, Feed Me...
@@ -248,7 +320,11 @@
       display: block;
     }
     .shan-desktop {
-      display: inline;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      vertical-align: top;
+      max-width: 100%;
     }
     .shan-mobile {
       display: none;
