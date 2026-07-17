@@ -50,9 +50,9 @@
     const y = e.clientY - rect.top;
 
     const nextStep = clickStep >= 3 ? 0 : clickStep + 1;
-    if (nextStep === 1) emailPos = { x, y };
-    else if (nextStep === 2) arenaPos = { x, y };
-    else if (nextStep === 3) instagramPos = { x, y };
+    if (nextStep === 1) instagramPos = { x, y };
+    else if (nextStep === 2) emailPos = { x, y };
+    else if (nextStep === 3) arenaPos = { x, y };
     clickStep = nextStep;
   }
 
@@ -296,28 +296,31 @@
         {#if isDesktop && clickStep >= 1}
           <a
             class="floating-label"
-            href="mailto:shannon.w.lin424@gmail.com"
-            style="left: {emailPos.x}px; top: {emailPos.y}px;"
-            in:receive={{ key: "email-desktop" }}
-            out:send={{ key: "email-desktop" }}>Email</a
+            href="https://www.instagram.com/swl_at_gmail_dot_com/"
+            style="left: {instagramPos.x}px; top: {instagramPos.y}px;"
+            on:click={(e) => e.stopPropagation()}
+            in:receive={{ key: "instagram-desktop" }}
+            out:send={{ key: "instagram-desktop" }}>Instagram</a
           >
         {/if}
         {#if isDesktop && clickStep >= 2}
           <a
             class="floating-label"
-            href="https://www.are.na/shannon-lin/channels"
-            style="left: {arenaPos.x}px; top: {arenaPos.y}px;"
-            in:receive={{ key: "arena-desktop" }}
-            out:send={{ key: "arena-desktop" }}>Are.na</a
+            href="mailto:shannon.w.lin424@gmail.com"
+            style="left: {emailPos.x}px; top: {emailPos.y}px;"
+            on:click={(e) => e.stopPropagation()}
+            in:receive={{ key: "email-desktop" }}
+            out:send={{ key: "email-desktop" }}>Email</a
           >
         {/if}
         {#if isDesktop && clickStep >= 3}
           <a
             class="floating-label"
-            href="https://www.instagram.com/swl_at_gmail_dot_com/"
-            style="left: {instagramPos.x}px; top: {instagramPos.y}px;"
-            in:receive={{ key: "instagram-desktop" }}
-            out:send={{ key: "instagram-desktop" }}>Instagram</a
+            href="https://www.are.na/shannon-lin/channels"
+            style="left: {arenaPos.x}px; top: {arenaPos.y}px;"
+            on:click={(e) => e.stopPropagation()}
+            in:receive={{ key: "arena-desktop" }}
+            out:send={{ key: "arena-desktop" }}>Are.na</a
           >
         {/if}
       </div>
@@ -325,26 +328,26 @@
       <footer class="footer-desktop">
         {#if isDesktop && clickStep < 1}
           <a
+            class="instagram-link"
+            href="https://www.instagram.com/swl_at_gmail_dot_com/"
+            in:receive={{ key: "instagram-desktop" }}
+            out:send={{ key: "instagram-desktop" }}>Instagram</a
+          >
+        {/if}
+        {#if isDesktop && clickStep < 2}
+          <a
             class="email-link"
             href="mailto:shannon.w.lin424@gmail.com"
             in:receive={{ key: "email-desktop" }}
             out:send={{ key: "email-desktop" }}>Email</a
           >
         {/if}
-        {#if isDesktop && clickStep < 2}
+        {#if isDesktop && clickStep < 3}
           <a
             class="arena-link"
             href="https://www.are.na/shannon-lin/channels"
             in:receive={{ key: "arena-desktop" }}
             out:send={{ key: "arena-desktop" }}>Are.na</a
-          >
-        {/if}
-        {#if isDesktop && clickStep < 3}
-          <a
-            class="instagram-link"
-            href="https://www.instagram.com/swl_at_gmail_dot_com/"
-            in:receive={{ key: "instagram-desktop" }}
-            out:send={{ key: "instagram-desktop" }}>Instagram</a
           >
         {/if}
       </footer>
@@ -358,28 +361,31 @@
       {#if !isDesktop && clickStep >= 1}
         <a
           class="floating-label"
-          href="mailto:shannon.w.lin424@gmail.com"
-          style="left: {emailPos.x}px; top: {emailPos.y}px;"
-          in:receive={{ key: "email-mobile" }}
-          out:send={{ key: "email-mobile" }}>Email</a
+          href="https://www.instagram.com/swl_at_gmail_dot_com/"
+          style="left: {instagramPos.x}px; top: {instagramPos.y}px;"
+          on:click={(e) => e.stopPropagation()}
+          in:receive={{ key: "instagram-mobile" }}
+          out:send={{ key: "instagram-mobile" }}>Instagram</a
         >
       {/if}
       {#if !isDesktop && clickStep >= 2}
         <a
           class="floating-label"
-          href="#"
-          style="left: {arenaPos.x}px; top: {arenaPos.y}px;"
-          in:receive={{ key: "arena-mobile" }}
-          out:send={{ key: "arena-mobile" }}>Are.na</a
+          href="mailto:shannon.w.lin424@gmail.com"
+          style="left: {emailPos.x}px; top: {emailPos.y}px;"
+          on:click={(e) => e.stopPropagation()}
+          in:receive={{ key: "email-mobile" }}
+          out:send={{ key: "email-mobile" }}>Email</a
         >
       {/if}
       {#if !isDesktop && clickStep >= 3}
         <a
           class="floating-label"
-          href="#"
-          style="left: {instagramPos.x}px; top: {instagramPos.y}px;"
-          in:receive={{ key: "instagram-mobile" }}
-          out:send={{ key: "instagram-mobile" }}>Instagram</a
+          href="https://www.are.na/shannon-lin/channels"
+          style="left: {arenaPos.x}px; top: {arenaPos.y}px;"
+          on:click={(e) => e.stopPropagation()}
+          in:receive={{ key: "arena-mobile" }}
+          out:send={{ key: "arena-mobile" }}>Are.na</a
         >
       {/if}
     </div>
@@ -387,26 +393,26 @@
     <footer class="footer-mobile">
       {#if !isDesktop && clickStep < 1}
         <a
+          class="instagram-link"
+          href="https://www.instagram.com/swl_at_gmail_dot_com/"
+          in:receive={{ key: "instagram-mobile" }}
+          out:send={{ key: "instagram-mobile" }}>Instagram</a
+        >
+      {/if}
+      {#if !isDesktop && clickStep < 2}
+        <a
           class="email-link"
           href="mailto:shannon.w.lin424@gmail.com"
           in:receive={{ key: "email-mobile" }}
           out:send={{ key: "email-mobile" }}>Email</a
         >
       {/if}
-      {#if !isDesktop && clickStep < 2}
-        <a
-          class="arena-link"
-          href="#"
-          in:receive={{ key: "arena-mobile" }}
-          out:send={{ key: "arena-mobile" }}>Are.na</a
-        >
-      {/if}
       {#if !isDesktop && clickStep < 3}
         <a
-          class="instagram-link"
-          href="#"
-          in:receive={{ key: "instagram-mobile" }}
-          out:send={{ key: "instagram-mobile" }}>Instagram</a
+          class="arena-link"
+          href="https://www.are.na/shannon-lin/channels"
+          in:receive={{ key: "arena-mobile" }}
+          out:send={{ key: "arena-mobile" }}>Are.na</a
         >
       {/if}
     </footer>
@@ -539,15 +545,15 @@
   .footer-desktop {
     display: none;
   }
-  .email-link {
+  .instagram-link {
     grid-column: 1;
     justify-self: start;
   }
-  .arena-link {
+  .email-link {
     grid-column: 2;
     justify-self: center;
   }
-  .instagram-link {
+  .arena-link {
     grid-column: 3;
     justify-self: end;
   }
