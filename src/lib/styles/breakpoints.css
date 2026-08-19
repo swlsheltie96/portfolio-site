@@ -1,0 +1,17 @@
+/*
+ * CSS custom properties can't be referenced inside @media conditions,
+ * so these vars are for reference (e.g. JS matchMedia) only. The
+ * @media rules below use literal values — keep them in sync with these.
+ */
+:root {
+	--breakpoint-tablet: 750px;
+	--breakpoint-desktop: 1000px;
+}
+
+@media (min-width: 750px) {
+	/* tablet and up */
+}
+
+@media (min-width: 1000px) {
+	/* desktop and up */
+}

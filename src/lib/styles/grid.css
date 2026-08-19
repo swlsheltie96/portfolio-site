@@ -1,0 +1,239 @@
+:root {
+  --grid-columns: 5;
+}
+
+@media (min-width: 750px) {
+  :root {
+    --grid-columns: 10;
+  }
+}
+
+@media (min-width: 1000px) {
+  :root {
+    --grid-columns: 20;
+  }
+}
+
+.grid {
+  width: calc(100% - (2 * var(--spacing)));
+  /* margin: var(--spacing); */
+}
+
+.col-1 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 1 + (1 - 1) * var(--spacing)
+  );
+}
+
+.col-2 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 2 + (2 - 1) * var(--spacing)
+  );
+}
+
+.col-3 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 3 + (3 - 1) * var(--spacing)
+  );
+}
+
+.col-4 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 4 + (4 - 1) * var(--spacing)
+  );
+}
+
+.col-5 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 5 + (5 - 1) * var(--spacing)
+  );
+}
+
+.col-6 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 6 + (6 - 1) * var(--spacing)
+  );
+}
+
+.col-7 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 7 + (7 - 1) * var(--spacing)
+  );
+}
+
+.col-8 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 8 + (8 - 1) * var(--spacing)
+  );
+}
+
+.col-9 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 9 + (9 - 1) * var(--spacing)
+  );
+}
+
+.col-10 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 10 + (10 - 1) * var(--spacing)
+  );
+}
+
+.col-11 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 11 + (11 - 1) * var(--spacing)
+  );
+}
+
+.col-12 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 12 + (12 - 1) * var(--spacing)
+  );
+}
+
+.col-13 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 13 + (13 - 1) * var(--spacing)
+  );
+}
+
+.col-14 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 14 + (14 - 1) * var(--spacing)
+  );
+}
+
+.col-15 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 15 + (15 - 1) * var(--spacing)
+  );
+}
+
+.col-16 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 16 + (16 - 1) * var(--spacing)
+  );
+}
+
+.col-17 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 17 + (17 - 1) * var(--spacing)
+  );
+}
+
+.col-18 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 18 + (18 - 1) * var(--spacing)
+  );
+}
+
+.col-19 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 19 + (19 - 1) * var(--spacing)
+  );
+}
+
+.col-20 {
+  width: calc(
+    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 20 + (20 - 1) * var(--spacing)
+  );
+}
+
+/*
+ * Per-breakpoint column overrides. Source order matters here: .col-N,
+ * .col-tablet-N and .col-mobile-N are all equal-specificity single-class
+ * selectors, so whichever matching rule appears LAST in the cascade wins.
+ * These must stay after .col-1..20 above. Each is scoped to its own
+ * viewport range and uses a literal total-column count (5 / 10) rather
+ * than var(--grid-columns), since --grid-columns already matches that
+ * total in the same range — these are just deliberately explicit.
+ */
+@media (min-width: 750px) and (max-width: 999px) {
+  .col-tablet-1 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 1 + (1 - 1) * var(--spacing));
+  }
+  .col-tablet-2 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 2 + (2 - 1) * var(--spacing));
+  }
+  .col-tablet-3 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 3 + (3 - 1) * var(--spacing));
+  }
+  .col-tablet-4 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 4 + (4 - 1) * var(--spacing));
+  }
+  .col-tablet-5 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 5 + (5 - 1) * var(--spacing));
+  }
+  .col-tablet-6 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 6 + (6 - 1) * var(--spacing));
+  }
+  .col-tablet-7 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 7 + (7 - 1) * var(--spacing));
+  }
+  .col-tablet-8 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 8 + (8 - 1) * var(--spacing));
+  }
+  .col-tablet-9 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 9 + (9 - 1) * var(--spacing));
+  }
+  .col-tablet-10 {
+    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 10 + (10 - 1) * var(--spacing));
+  }
+}
+
+/*
+ * Per-breakpoint flex order overrides. Slots opt in by setting
+ * --order-desktop / --order-tablet / --order-mobile inline (see
+ * +page.svelte); anything unset resolves to 0, i.e. source/DOM order.
+ * Matches both top-level slots (children of .page-grid) and slots nested
+ * inside a Group (children of .group), since a Group is itself a flex
+ * container its children can be reordered within.
+ */
+.page-grid > .component,
+.page-grid > .spacer,
+.page-grid > .group,
+.group > .component,
+.group > .spacer,
+.group > .group {
+  order: var(--order-desktop, 0);
+}
+
+@media (min-width: 750px) and (max-width: 999px) {
+  .page-grid > .component,
+  .page-grid > .spacer,
+  .page-grid > .group,
+  .group > .component,
+  .group > .spacer,
+  .group > .group {
+    order: var(--order-tablet, var(--order-desktop, 0));
+  }
+}
+
+@media (max-width: 749px) {
+  .page-grid > .component,
+  .page-grid > .spacer,
+  .page-grid > .group,
+  .group > .component,
+  .group > .spacer,
+  .group > .group {
+    order: var(--order-mobile, var(--order-desktop, 0));
+  }
+}
+
+@media (max-width: 749px) {
+  .col-mobile-1 {
+    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 1 + (1 - 1) * var(--spacing));
+  }
+  .col-mobile-2 {
+    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 2 + (2 - 1) * var(--spacing));
+  }
+  .col-mobile-3 {
+    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 3 + (3 - 1) * var(--spacing));
+  }
+  .col-mobile-4 {
+    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 4 + (4 - 1) * var(--spacing));
+  }
+  .col-mobile-5 {
+    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 5 + (5 - 1) * var(--spacing));
+  }
+}

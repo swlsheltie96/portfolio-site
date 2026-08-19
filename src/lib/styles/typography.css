@@ -1,0 +1,36 @@
+:root {
+  --font-sans: "Unica77Mono", sans-serif;
+  --font-serif: "IvoryMono", serif;
+  --font-family: var(--font-sans);
+
+  --font-size-body: 16px;
+  --line-height-body: 18px;
+  --font-size-small: 12px;
+}
+
+@media (max-width: 750px) {
+  :root {
+    --font-size-body: 14px;
+    --line-height-body: 18px;
+    --font-size-small: 11px;
+  }
+}
+
+[data-typeface="serif"] {
+  --font-family: var(--font-serif);
+  letter-spacing: -0.4px;
+}
+
+body {
+  font-family: var(--font-family);
+}
+
+.text-body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.text-small {
+  font-size: var(--font-size-small);
+  line-height: var(--font-size-small);
+}

@@ -1,0 +1,306 @@
+<script lang="ts">
+	import { onDestroy } from 'svelte';
+	import { page } from '$app/state';
+	import { layouts, mobileDisabledLayouts } from '$lib/layouts';
+	import { layoutState } from '$lib/state/layout.svelte';
+	import { brushState } from '$lib/state/brush.svelte';
+	import { mirrorState } from '$lib/state/mirror.svelte';
+	import { clearState } from '$lib/state/clear.svelte';
+	import { radioState } from '$lib/state/radio.svelte';
+
+	let debugOn = $state(false);
+	let typeface: 'sans' | 'serif' = $state('sans');
+	let navEl: HTMLElement | undefined = $state();
+	let toolsOpen = $state(false);
+	let isMobile = $state(false);
+
+	$effect(() => {
+		const mobileQuery = window.matchMedia('(max-width: 749px)');
+		const update = () => (isMobile = mobileQuery.matches);
+		update();
+		mobileQuery.addEventListener('change', update);
+		return () => mobileQuery.removeEventListener('change', update);
+	});
+
+	const homeText = 'non';
+	let homeDisplayText = $state(homeText.toUpperCase());
+	let homeCycleInterval: ReturnType<typeof setInterval> | undefined;
+
+	function randomizeCase(text: string) {
+		return text
+			.split('')
+			.map((char) => (Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase()))
+			.join('');
+	}
+
+	function startHomeCycle() {
+		clearInterval(homeCycleInterval);
+		homeCycleInterval = setInterval(() => {
+			homeDisplayText = randomizeCase(homeText);
+		}, 100);
+	}
+
+	function stopHomeCycle() {
+		clearInterval(homeCycleInterval);
+		homeCycleInterval = undefined;
+		homeDisplayText = homeText.toUpperCase();
+	}
+
+	onDestroy(() => clearInterval(homeCycleInterval));
+
+	function randomStatusText() {
+		const options = [
+			'All systems live',
+			`${Math.floor(Math.random() * 300)} online`,
+			'accepting new work',
+		];
+		return options[Math.floor(Math.random() * options.length)];
+	}
+
+	const statusText = randomStatusText();
+
+	function toggleDebug() {
+		debugOn = !debugOn;
+		document.documentElement.dataset.debug = debugOn ? 'true' : 'false';
+	}
+
+	function toggleTypeface() {
+		typeface = typeface === 'sans' ? 'serif' : 'sans';
+		if (typeface === 'serif') {
+			document.documentElement.dataset.typeface = 'serif';
+		} else {
+			delete document.documentElement.dataset.typeface;
+		}
+	}
+
+	const FONT_SIZE_MIN = 10;
+	const FONT_SIZE_MAX = 32;
+	const FONT_SIZE_STEP = 1;
+
+	const LINE_HEIGHT_MIN = 12;
+	const LINE_HEIGHT_MAX = 34;
+
+	let bodyFontSize = $state(16);
+	let bodyLineHeight = $state(18);
+
+	function clamp(value: number, min: number, max: number) {
+		return Math.min(max, Math.max(min, value));
+	}
+
+	function adjustFontSize(delta: number) {
+		bodyFontSize = clamp(bodyFontSize + delta, FONT_SIZE_MIN, FONT_SIZE_MAX);
+		bodyLineHeight = clamp(
+			bodyLineHeight + delta,
+			LINE_HEIGHT_MIN,
+			LINE_HEIGHT_MAX,
+		);
+		document.documentElement.style.setProperty(
+			'--font-size-body',
+			`${bodyFontSize}px`,
+		);
+		document.documentElement.style.setProperty(
+			'--line-height-body',
+			`${bodyLineHeight}px`,
+		);
+	}
+
+	$effect(() => {
+		if (!navEl) return;
+
+		const setNavbarHeight = () => {
+			document.documentElement.style.setProperty(
+				'--navbar-height',
+				`${navEl!.offsetHeight}px`,
+			);
+		};
+
+		setNavbarHeight();
+
+		const observer = new ResizeObserver(setNavbarHeight);
+		observer.observe(navEl);
+
+		return () => observer.disconnect();
+	});
+</script>
+
+<nav bind:this={navEl}>
+	<div class="nav-bar col-20 col-tablet-10 col-mobile-5">
+		<div class="main nav-inner">
+			<a
+				class="button"
+				href="/"
+				onclick={(e) => {
+					if (page.url.pathname === '/') {
+						e.preventDefault();
+						window.location.reload();
+					}
+				}}
+				onmouseenter={startHomeCycle}
+				onmouseleave={stopHomeCycle}
+				><span class="home-cycle">{homeDisplayText}</span> studio</a
+			>
+			{#if page.data.project}
+				<span class="button">{page.data.project.title}</span>
+			{/if}
+		</div>
+
+		<button
+			class="button status-button status-button-mobile"
+			class:active={toolsOpen}
+			onclick={() => (toolsOpen = !toolsOpen)}
+		>
+			<span class="status-dot"></span>
+			{statusText}
+		</button>
+
+		<div class="secondary nav-inner" class:tools-open={toolsOpen}>
+			<select class="button" bind:value={layoutState.index}>
+				{#each layouts as _, i}
+					{#if !isMobile || !mobileDisabledLayouts.includes(i)}
+						<option value={i}>Layout {i + 1}</option>
+					{/if}
+				{/each}
+			</select>
+			<button class="button status-button status-button-desktop">
+				<span class="status-dot"></span>
+				{statusText}
+			</button>
+			<button class="button" onclick={() => radioState.toggle()}>
+				{radioState.isPlaying
+					? `⏸️ ${radioState.currentSongTitle}`
+					: `▶️ ${radioState.currentSongTitle}`}
+			</button>
+			<button
+				class="button"
+				class:active={brushState.active}
+				onclick={(e) => {
+					e.stopPropagation();
+					brushState.active = true;
+				}}>Brush</button
+			>
+			<button
+				class="button"
+				class:active={clearState.active}
+				onclick={(e) => {
+					e.stopPropagation();
+					clearState.active = true;
+				}}>Clear</button
+			>
+			<!-- <button class="button">Redact</button>
+
+			<button class="button">Physics</button>
+			<button class="button">Colors</button>
+			<button class="button">Clear</button> -->
+	<button
+			class="button"
+			class:active={mirrorState.active}
+			onclick={() => mirrorState.toggle()}>Mirror</button
+		>
+			<button class="button" class:active={debugOn} onclick={toggleDebug}
+				>Grid</button
+			>
+			<div class="type-controls">
+				<button class="button" onclick={toggleTypeface}
+					>{typeface === 'serif' ? 'T' : 'T'}</button
+				>
+				<button class="button" onclick={() => adjustFontSize(FONT_SIZE_STEP)}
+					>+</button
+				>
+				<button class="button" onclick={() => adjustFontSize(-FONT_SIZE_STEP)}
+					>-</button
+				>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<style>
+	nav {
+		position: sticky;
+		top: var(--spacing);
+		/* border-bottom: 1px solid black; */
+		/* padding-bottom: var(--spacing); */
+		z-index: 10;
+		margin-bottom: var(--spacing-sm);
+	}
+	nav a,
+	nav button,
+	nav select {
+		pointer-events: auto;
+	}
+	.nav-bar {
+		display: flex;
+		justify-content: space-between;
+	}
+	.nav-inner {
+		display: flex;
+		gap: var(--spacing);
+	}
+
+	.type-controls {
+		display: flex;
+		gap: var(--spacing);
+	}
+
+	.button.active {
+		background: black;
+		color: white;
+	}
+
+	.home-cycle {
+		text-transform: none;
+	}
+
+	.status-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: #2ecc71;
+		flex-shrink: 0;
+	}
+
+	/* display:none elements don't participate in flex layout, so this stays
+	   out of the way of the desktop/tablet .main / .secondary space-between
+	   pairing — it only comes into play under the mobile override below.
+	   Declared after .status-button so this wins the display tie-break. */
+	.status-button-mobile {
+		display: none;
+	}
+
+	@media (max-width: 749px) {
+		.nav-bar {
+			flex-wrap: wrap;
+			row-gap: var(--spacing-sm);
+		}
+		.nav-inner {
+			flex-wrap: wrap;
+		}
+
+		.status-button-mobile {
+			display: inline-flex;
+			cursor: pointer;
+		}
+		.status-button-desktop {
+			display: none;
+		}
+
+		/* The collapsible button list: right-aligned column, hidden until the
+		   mobile status pill (tapped as the open/close toggle) sets tools-open.
+		   flex-basis: 100% forces it onto its own row below .main / the pill. */
+		.secondary {
+			display: none;
+			flex-direction: column;
+			align-items: flex-end;
+			flex-basis: 100%;
+		}
+		.secondary.tools-open {
+			display: flex;
+		}
+	}
+</style>
