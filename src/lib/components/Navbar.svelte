@@ -154,13 +154,13 @@
 		</button>
 
 		<div class="secondary nav-inner" class:tools-open={toolsOpen}>
-			<select class="button" bind:value={layoutState.index}>
+			<!-- <select class="button" bind:value={layoutState.index}>
 				{#each layouts as _, i}
 					{#if !isMobile || !mobileDisabledLayouts.includes(i)}
 						<option value={i}>Layout {i + 1}</option>
 					{/if}
 				{/each}
-			</select>
+			</select> -->
 			<button class="button status-button status-button-desktop">
 				<span class="status-dot"></span>
 				{statusText}
