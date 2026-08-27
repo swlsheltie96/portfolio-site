@@ -1,6 +1,6 @@
 import groq from "groq";
 
-export const projectsListQuery = groq`*[_type == "project"] | order(orderRank asc){ title, slug, coverImage, coverVideo, excerpt, year, categories, comingSoon, comingSoonText }`;
+export const projectsListQuery = groq`*[_type == "project"] | order(orderRank asc){ title, slug, coverImage, coverVideo, excerpt, year, categories, comingSoon, comingSoonText, gallery[hidden != true][0...5] }`;
 
 export const projectBySlugQuery = groq`*[_type == "project" && slug.current == $slug][0]{ title, slug, coverImage, excerpt, year, categories, gallery[hidden != true], stackGallery }`;
 

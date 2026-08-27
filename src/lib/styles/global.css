@@ -41,7 +41,7 @@
   text-transform: uppercase;
   border-bottom: 1px dashed black;
   padding-bottom: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing);
 }
 button,
 a.button,

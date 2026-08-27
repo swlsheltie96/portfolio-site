@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { optimizedUrlFor, srcSetFor } from '$lib/sanity/image';
-	import ProjectsList from '$lib/components/ProjectsList.svelte';
+	import ProjectsListSmall from '$lib/components/ProjectsListSmall.svelte';
 	import Info from '$lib/components/Info.svelte';
 	let { data } = $props();
 	let project = $derived(data.project);
@@ -94,7 +94,7 @@
 				</div>
 			{/each}
 			<div class="all-projects related component col-16 col-tablet-10 col-mobile-5">
-				<ProjectsList
+				<ProjectsListSmall
 					projects={data.projects}
 					activeSlug={project.slug.current}
 				/>

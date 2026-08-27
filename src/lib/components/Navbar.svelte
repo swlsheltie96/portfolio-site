@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import { page } from '$app/state';
-	import { layouts, mobileDisabledLayouts } from '$lib/layouts';
 	import { layoutState } from '$lib/state/layout.svelte';
 	import { brushState } from '$lib/state/brush.svelte';
 	import { mirrorState } from '$lib/state/mirror.svelte';
@@ -12,15 +11,6 @@
 	let typeface: 'sans' | 'serif' = $state('sans');
 	let navEl: HTMLElement | undefined = $state();
 	let toolsOpen = $state(false);
-	let isMobile = $state(false);
-
-	$effect(() => {
-		const mobileQuery = window.matchMedia('(max-width: 749px)');
-		const update = () => (isMobile = mobileQuery.matches);
-		update();
-		mobileQuery.addEventListener('change', update);
-		return () => mobileQuery.removeEventListener('change', update);
-	});
 
 	const homeText = 'non';
 	let homeDisplayText = $state(homeText.toUpperCase());
@@ -29,7 +19,9 @@
 	function randomizeCase(text: string) {
 		return text
 			.split('')
-			.map((char) => (Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase()))
+			.map((char) =>
+				Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase(),
+			)
 			.join('');
 	}
 
@@ -51,7 +43,7 @@
 	function randomStatusText() {
 		const options = [
 			'All systems live',
-			`${Math.floor(Math.random() * 300)} online`,
+			`${Math.floor(Math.random() * 100)} online`,
 			'accepting new work',
 		];
 		return options[Math.floor(Math.random() * options.length)];
@@ -139,6 +131,9 @@
 				onmouseleave={stopHomeCycle}
 				><span class="home-cycle">{homeDisplayText}</span> studio</a
 			>
+			<button class="button" onclick={() => layoutState.next()}>
+				Layout {layoutState.index + 1}
+			</button>
 			{#if page.data.project}
 				<span class="button">{page.data.project.title}</span>
 			{/if}
@@ -154,61 +149,60 @@
 		</button>
 
 		<div class="secondary nav-inner" class:tools-open={toolsOpen}>
-			<!-- <select class="button" bind:value={layoutState.index}>
-				{#each layouts as _, i}
-					{#if !isMobile || !mobileDisabledLayouts.includes(i)}
-						<option value={i}>Layout {i + 1}</option>
-					{/if}
-				{/each}
-			</select> -->
-			<button class="button status-button status-button-desktop">
+			<button
+				class="button status-button status-button-desktop"
+				class:active={toolsOpen}
+				onclick={() => (toolsOpen = !toolsOpen)}
+			>
 				<span class="status-dot"></span>
 				{statusText}
 			</button>
-			<button class="button" onclick={() => radioState.toggle()}>
-				{radioState.isPlaying
-					? `⏸️ ${radioState.currentSongTitle}`
-					: `▶️ ${radioState.currentSongTitle}`}
-			</button>
-			<button
-				class="button"
-				class:active={brushState.active}
-				onclick={(e) => {
-					e.stopPropagation();
-					brushState.active = true;
-				}}>Brush</button
-			>
-			<button
-				class="button"
-				class:active={clearState.active}
-				onclick={(e) => {
-					e.stopPropagation();
-					clearState.active = true;
-				}}>Clear</button
-			>
-			<!-- <button class="button">Redact</button>
+			<div class="secondary-buttons">
+				<button class="button" onclick={() => radioState.toggle()}>
+					{radioState.isPlaying
+						? `⏸️ ${radioState.currentSongTitle}`
+						: `▶️ ${radioState.currentSongTitle}`}
+				</button>
+				<button
+					class="button"
+					class:active={brushState.active}
+					onclick={(e) => {
+						e.stopPropagation();
+						brushState.active = true;
+					}}>Brush</button
+				>
+				<button
+					class="button"
+					class:active={clearState.active}
+					onclick={(e) => {
+						e.stopPropagation();
+						clearState.active = true;
+					}}>Clear</button
+				>
+				<!-- <button class="button">Redact</button>
 
-			<button class="button">Physics</button>
-			<button class="button">Colors</button>
-			<button class="button">Clear</button> -->
-	<button
-			class="button"
-			class:active={mirrorState.active}
-			onclick={() => mirrorState.toggle()}>Mirror</button
-		>
-			<button class="button" class:active={debugOn} onclick={toggleDebug}
-				>Grid</button
-			>
-			<div class="type-controls">
-				<button class="button" onclick={toggleTypeface}
-					>{typeface === 'serif' ? 'T' : 'T'}</button
+				<button class="button">Physics</button>
+				<button class="button">Colors</button>
+				<button class="button">Clear</button> -->
+				<button
+					class="button"
+					class:active={mirrorState.active}
+					onclick={() => mirrorState.toggle()}>Mirror</button
 				>
-				<button class="button" onclick={() => adjustFontSize(FONT_SIZE_STEP)}
-					>+</button
+				<button class="button" class:active={debugOn} onclick={toggleDebug}
+					>Grid</button
 				>
-				<button class="button" onclick={() => adjustFontSize(-FONT_SIZE_STEP)}
-					>-</button
-				>
+				<div class="type-controls">
+					<button class="button" onclick={toggleTypeface}
+						>{typeface === 'serif' ? 'T' : 'T'}</button
+					>
+					<button class="button" onclick={() => adjustFontSize(FONT_SIZE_STEP)}
+						>+</button
+					>
+					<button class="button" onclick={() => adjustFontSize(-FONT_SIZE_STEP)}
+						>-</button
+					>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -255,6 +249,28 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
+	}
+
+	.status-button-desktop {
+		cursor: pointer;
+	}
+
+	/* display:contents makes this wrapper invisible to layout by default, so
+	   its buttons act as direct .secondary flex items — this is what keeps
+	   the mobile column (each button its own row) working unchanged. The
+	   desktop collapse/expand below overrides this only at desktop widths. */
+	.secondary-buttons {
+		display: contents;
+	}
+
+	@media (min-width: 750px) {
+		.secondary-buttons {
+			display: none;
+			gap: var(--spacing);
+		}
+		.secondary.tools-open .secondary-buttons {
+			display: flex;
+		}
 	}
 
 	.status-dot {

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { brushState } from '$lib/state/brush.svelte';
 	import { clearState } from '$lib/state/clear.svelte';
+	import { layoutState } from '$lib/state/layout.svelte';
 
 	let { children } = $props();
 </script>
 
 <div
-	class="grid page-grid"
+	class="grid page-grid layout-{layoutState.index + 1}"
 	class:drawing={brushState.active}
 	class:cleared={clearState.active}
 >

@@ -3,7 +3,9 @@
 	import About from '$lib/components/About.svelte';
 	import Info from '$lib/components/Info.svelte';
 	import Clients from '$lib/components/Clients.svelte';
-	import ProjectsList from '$lib/components/ProjectsList.svelte';
+	import ProjectsListSmall from '$lib/components/ProjectsListSmall.svelte';
+	import ProjectsListMedium from '$lib/components/ProjectsListMedium.svelte';
+	import ProjectsListLarge from '$lib/components/ProjectsListLarge.svelte';
 	import Preview from '$lib/components/Preview.svelte';
 	import News from '$lib/components/News.svelte';
 	import CameraRoll from '$lib/components/CameraRoll.svelte';
@@ -17,21 +19,14 @@
 
 	let { data } = $props();
 
-	// Intentionally a one-time read, not reactive: this needs to run before
-	// the first render (including SSR) so the correct layout is there from
-	// the start — an $effect only runs post-mount, client-side only, which
-	// briefly rendered layout 0 first on every load and caused stale sticky
-	// measurements (and an SSR/hydration flash) once the real layout swapped
-	// in via the unkeyed #each below. layoutState.index stays freely
-	// mutable afterward (e.g. via the Navbar layout picker).
-	layoutState.index = data.layoutIndex;
-
 	const componentMap: Partial<Record<ComponentName, any>> = {
 		Header,
 		About,
 		Info,
 		Clients,
-		ProjectsList,
+		ProjectsListSmall,
+		ProjectsListMedium,
+		ProjectsListLarge,
 		Preview,
 		News,
 		CameraRoll,
@@ -55,7 +50,9 @@
 			linkedinLink: data.siteSettings.linkedinLink,
 		},
 		Clients: { items: data.siteSettings.clientsAndCollaborators },
-		ProjectsList: { projects: data.projects },
+		ProjectsListSmall: { projects: data.projects },
+		ProjectsListMedium: { projects: data.projects },
+		ProjectsListLarge: { projects: data.projects },
 		Preview: { projects: data.projects },
 		News: { news: data.news },
 		CameraRoll: { images: data.galleryImages },

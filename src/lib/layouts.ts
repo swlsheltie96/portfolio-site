@@ -3,7 +3,9 @@ export type ComponentName =
   | "About"
   | "Info"
   | "Clients"
-  | "ProjectsList"
+  | "ProjectsListSmall"
+  | "ProjectsListMedium"
+  | "ProjectsListLarge"
   | "Preview"
   | "News"
   | "CameraRoll"
@@ -33,7 +35,8 @@ export type LayoutSlot = {
   colSpan: ColSpan;
   order?: Order;
   sticky?: boolean;
-  showPreview?: boolean;
+  // Number of gallery images to show per project row (ProjectsListSmall/Large).
+  showPreview?: number;
   // Only used when component === "Group": how its children flow inside it.
   // "row" matches the page's normal wrapping behavior; "column" stacks them.
   direction?: "row" | "column";
@@ -53,16 +56,17 @@ export const layouts: LayoutSlot[][] = [
     },
 
     {
-      component: "ProjectsList",
-      colSpan: { mobile: 5, tablet: 10, desktop: 10 },
+      component: "ProjectsListSmall",
+      colSpan: { mobile: 5, tablet: 10, desktop: 20 },
+      showPreview: 3,
       order: { mobile: 2 },
     },
-    { component: "Spacer", colSpan: { mobile: 5, tablet: 6, desktop: 6 } },
-    {
-      component: "Preview",
-      colSpan: { mobile: 5, tablet: 4, desktop: 4 },
-      order: { mobile: 3 },
-    },
+    // { component: "Spacer", colSpan: { mobile: 5, tablet: 6, desktop: 6 } },
+    // {
+    //   component: "Preview",
+    //   colSpan: { mobile: 5, tablet: 4, desktop: 4 },
+    //   order: { mobile: 3 },
+    // },
 
     {
       component: "About",
@@ -79,13 +83,6 @@ export const layouts: LayoutSlot[][] = [
     { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
 
     {
-      component: "News",
-      colSpan: { mobile: 5, tablet: 8, desktop: 10 },
-      order: { mobile: 8 },
-    },
-    { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
-
-    {
       component: "Recognition",
       colSpan: { mobile: 5, tablet: 3, desktop: 10 },
       order: { mobile: 5 },
@@ -98,16 +95,21 @@ export const layouts: LayoutSlot[][] = [
       colSpan: { mobile: 5, tablet: 10, desktop: 10 },
       order: { mobile: 6 },
     },
+    { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
 
-    { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 8 } },
+    {
+      component: "News",
+      colSpan: { mobile: 5, tablet: 8, desktop: 8 },
+      order: { mobile: 8 },
+    },
+    // { component: "Radio", colSpan: { mobile: 5, tablet: 10, desktop: 20 } },
+    // { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 1 } },
 
     {
       component: "Live",
       colSpan: { mobile: 1, tablet: 2, desktop: 2 },
       order: { mobile: 1 },
     },
-    // { component: "Radio", colSpan: { mobile: 5, tablet: 10, desktop: 20 } },
-
     {
       component: "Info",
       colSpan: { mobile: 5, tablet: 10, desktop: 20 },
@@ -117,80 +119,67 @@ export const layouts: LayoutSlot[][] = [
   // LAYOUT 2
   [
     {
+      component: "ProjectsListSmall",
+      colSpan: { mobile: 5, tablet: 10, desktop: 10 },
+      // showPreview: true,
+      sticky: true,
+    },
+    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 4 } },
+
+    {
       component: "Group",
       colSpan: { mobile: 5, tablet: 6, desktop: 4 },
       direction: "column", // or "row" (default) — "row" flows/wraps like the rest of the page
       children: [
         {
           component: "Preview",
-          colSpan: { mobile: 5, tablet: 4, desktop: 4 },
-          order: { mobile: 1 },
+          colSpan: { mobile: 5, tablet: 4, desktop: 6 },
+          // sticky: true,
         },
+
         {
-          component: "Header",
-          colSpan: { mobile: 5, tablet: 6, desktop: 4 },
-          order: { mobile: 0 },
+          component: "Recognition",
+          colSpan: { mobile: 5, tablet: 6, desktop: 6 },
+          order: { mobile: 4 },
+        },
+
+        {
+          component: "News",
+          colSpan: { mobile: 5, tablet: 6, desktop: 6 },
+          order: { mobile: 5 },
+        },
+
+        {
+          component: "CameraRoll",
+          colSpan: { mobile: 5, tablet: 6, desktop: 6 },
+          order: { mobile: 6 },
+        },
+
+        {
+          component: "About",
+          colSpan: { mobile: 5, tablet: 6, desktop: 6 },
+          order: { mobile: 2 },
+        },
+
+        {
+          component: "Group",
+          colSpan: { mobile: 5, tablet: 6, desktop: 6 },
+          direction: "row", // or "row" (default) — "row" flows/wraps like the rest of the page
+          children: [
+            {
+              component: "Clients",
+              colSpan: { mobile: 5, tablet: 10, desktop: 4 },
+              order: { mobile: 3 },
+            },
+            {
+              component: "Live",
+              colSpan: { mobile: 1, tablet: 2, desktop: 2 },
+              order: { mobile: 7 },
+            },
+          ],
         },
       ],
-      sticky: true,
     },
-
-    {
-      component: "ProjectsList",
-      colSpan: { mobile: 5, tablet: 10, desktop: 10 },
-      // showPreview: true,
-      sticky: true,
-    },
-
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    {
-      component: "News",
-      colSpan: { mobile: 5, tablet: 6, desktop: 6 },
-      order: { mobile: 5 },
-    },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    {
-      component: "Recognition",
-      colSpan: { mobile: 5, tablet: 6, desktop: 6 },
-      order: { mobile: 4 },
-    },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    {
-      component: "CameraRoll",
-      colSpan: { mobile: 5, tablet: 6, desktop: 6 },
-      order: { mobile: 6 },
-    },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    {
-      component: "Live",
-      colSpan: { mobile: 1, tablet: 2, desktop: 2 },
-      order: { mobile: 7 },
-    },
-
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    {
-      component: "Radio",
-      colSpan: { mobile: 5, tablet: 6, desktop: 6 },
-      order: { mobile: 8 },
-    },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-
-    {
-      component: "About",
-      colSpan: { mobile: 5, tablet: 6, desktop: 6 },
-      order: { mobile: 2 },
-    },
-
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    {
-      component: "Clients",
-      colSpan: { mobile: 5, tablet: 10, desktop: 6 },
-      order: { mobile: 3 },
-    },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
     {
       component: "Info",
       colSpan: { mobile: 5, tablet: 10, desktop: 20 },
@@ -199,16 +188,16 @@ export const layouts: LayoutSlot[][] = [
   ],
   // LAYOUT 3
   [
-    { component: "Header", colSpan: { mobile: 5, tablet: 6, desktop: 16 } },
+    { component: "Header", colSpan: { mobile: 5, tablet: 6, desktop: 18 } },
 
     {
-      component: "Preview",
-      colSpan: { mobile: 5, tablet: 4, desktop: 4 },
+      component: "Live",
+      colSpan: { mobile: 5, tablet: 4, desktop: 2 },
       sticky: true,
     },
 
     {
-      component: "ProjectsList",
+      component: "ProjectsListMedium",
       colSpan: { mobile: 5, tablet: 10, desktop: 20 },
     },
     { component: "Radio", colSpan: { mobile: 5, tablet: 6, desktop: 20 } },
@@ -225,10 +214,6 @@ export const layouts: LayoutSlot[][] = [
     { component: "Recognition", colSpan: { mobile: 5, tablet: 6, desktop: 6 } },
     { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
     { component: "CameraRoll", colSpan: { mobile: 5, tablet: 6, desktop: 6 } },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
-    { component: "Live", colSpan: { mobile: 5, tablet: 2, desktop: 2 } },
-    { component: "Live", colSpan: { mobile: 5, tablet: 2, desktop: 2 } },
-    { component: "Live", colSpan: { mobile: 5, tablet: 2, desktop: 2 } },
 
     { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 14 } },
     { component: "Clients", colSpan: { mobile: 5, tablet: 10, desktop: 6 } },
@@ -237,8 +222,10 @@ export const layouts: LayoutSlot[][] = [
   // LAYOUT 4
 
   [
+    { component: "Header", colSpan: { mobile: 5, tablet: 6, desktop: 20 } },
+
     {
-      component: "ProjectsList",
+      component: "ProjectsListSmall",
       colSpan: { mobile: 5, tablet: 10, desktop: 10 },
     },
     {
@@ -246,22 +233,20 @@ export const layouts: LayoutSlot[][] = [
       colSpan: { mobile: 5, tablet: 4, desktop: 10 },
     },
 
-    { component: "Radio", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
+    // { component: "Radio", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
+    { component: "About", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
 
-    { component: "Header", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
-
-    { component: "News", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
     {
       component: "Recognition",
       colSpan: { mobile: 5, tablet: 6, desktop: 10 },
     },
-    { component: "About", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
-
     { component: "CameraRoll", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
 
+    { component: "News", colSpan: { mobile: 5, tablet: 6, desktop: 10 } },
+
+    { component: "Clients", colSpan: { mobile: 5, tablet: 10, desktop: 18 } },
     { component: "Live", colSpan: { mobile: 5, tablet: 2, desktop: 2 } },
-    { component: "Spacer", colSpan: { mobile: 14, tablet: 14, desktop: 18 } },
-    { component: "Clients", colSpan: { mobile: 5, tablet: 10, desktop: 20 } },
+
     { component: "Info", colSpan: { mobile: 5, tablet: 10, desktop: 20 } },
   ],
   // LAYOUT 5
@@ -273,9 +258,9 @@ export const layouts: LayoutSlot[][] = [
     },
 
     {
-      component: "ProjectsList",
+      component: "ProjectsListLarge",
       colSpan: { mobile: 5, tablet: 10, desktop: 20 },
-      showPreview: true,
+      // showPreview: true,
       order: { mobile: 1 },
     },
 
@@ -320,4 +305,54 @@ export const layouts: LayoutSlot[][] = [
       order: { mobile: 8 },
     },
   ],
+  // // LAYOUT 6
+  // [
+  //   {
+  //     component: "Group",
+  //     colSpan: { mobile: 5, tablet: 4, desktop: 6 },
+  //     direction: "column",
+  //     sticky: true,
+  //     children: [
+  //       { component: "Header", colSpan: { mobile: 5, tablet: 4, desktop: 6 } },
+  //       { component: "Preview", colSpan: { mobile: 5, tablet: 4, desktop: 6 } },
+  //       { component: "About", colSpan: { mobile: 5, tablet: 4, desktop: 6 } },
+  //     ],
+  //   },
+
+  //   {
+  //     component: "ProjectsListMedium",
+  //     colSpan: { mobile: 5, tablet: 6, desktop: 14 },
+  //   },
+
+  //   { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 20 } },
+
+  //   {
+  //     component: "Recognition",
+  //     colSpan: { mobile: 5, tablet: 3, desktop: 6 },
+  //   },
+  //   {
+  //     component: "News",
+  //     colSpan: { mobile: 5, tablet: 3, desktop: 6 },
+  //   },
+  //   {
+  //     component: "CameraRoll",
+  //     colSpan: { mobile: 5, tablet: 4, desktop: 8 },
+  //   },
+
+  //   { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 20 } },
+
+  //   {
+  //     component: "Clients",
+  //     colSpan: { mobile: 5, tablet: 8, desktop: 10 },
+  //   },
+  //   {
+  //     component: "Live",
+  //     colSpan: { mobile: 1, tablet: 2, desktop: 2 },
+  //   },
+
+  //   {
+  //     component: "Info",
+  //     colSpan: { mobile: 5, tablet: 10, desktop: 20 },
+  //   },
+  // ],
 ];
