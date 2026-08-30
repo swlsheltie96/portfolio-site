@@ -12,7 +12,7 @@
 	let navEl: HTMLElement | undefined = $state();
 	let toolsOpen = $state(false);
 
-	const homeText = 'non';
+	const homeText = 'swl';
 	let homeDisplayText = $state(homeText.toUpperCase());
 	let homeCycleInterval: ReturnType<typeof setInterval> | undefined;
 
@@ -131,22 +131,15 @@
 				onmouseleave={stopHomeCycle}
 				><span class="home-cycle">{homeDisplayText}</span> studio</a
 			>
-			<button class="button" onclick={() => layoutState.next()}>
-				Layout {layoutState.index + 1}
-			</button>
+			{#if page.url.pathname === '/'}
+				<button class="button" onclick={() => layoutState.next()}>
+					Layout {layoutState.index + 1}
+				</button>
+			{/if}
 			{#if page.data.project}
 				<span class="button">{page.data.project.title}</span>
 			{/if}
 		</div>
-
-		<button
-			class="button status-button status-button-mobile"
-			class:active={toolsOpen}
-			onclick={() => (toolsOpen = !toolsOpen)}
-		>
-			<span class="status-dot"></span>
-			{statusText}
-		</button>
 
 		<div class="secondary nav-inner" class:tools-open={toolsOpen}>
 			<button
@@ -281,14 +274,6 @@
 		flex-shrink: 0;
 	}
 
-	/* display:none elements don't participate in flex layout, so this stays
-	   out of the way of the desktop/tablet .main / .secondary space-between
-	   pairing — it only comes into play under the mobile override below.
-	   Declared after .status-button so this wins the display tie-break. */
-	.status-button-mobile {
-		display: none;
-	}
-
 	@media (max-width: 749px) {
 		.nav-bar {
 			flex-wrap: wrap;
@@ -297,11 +282,11 @@
 		.nav-inner {
 			flex-wrap: wrap;
 		}
-
-		.status-button-mobile {
-			display: inline-flex;
-			cursor: pointer;
+		.main {
+			width: 100%;
+			justify-content: space-between;
 		}
+
 		.status-button-desktop {
 			display: none;
 		}

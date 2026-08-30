@@ -45,7 +45,7 @@ export type LayoutSlot = {
 
 // Indices (into `layouts` below) excluded from the mobile random pick and
 // from the Layout dropdown while on mobile. Desktop/tablet are unaffected.
-export const mobileDisabledLayouts: number[] = [2, 3];
+export const mobileDisabledLayouts: number[] = [3];
 
 export const layouts: LayoutSlot[][] = [
   [

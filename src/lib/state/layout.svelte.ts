@@ -1,28 +1,31 @@
 import { browser } from '$app/environment';
 import { layouts, mobileDisabledLayouts } from '$lib/layouts';
 
-const STORAGE_KEY = 'layout-index';
+// Layout indices eligible to be picked, filtering out ones disabled on mobile.
+function eligibleIndices(): number[] {
+	const isMobile = browser && window.matchMedia('(max-width: 749px)').matches;
+	return layouts
+		.map((_, i) => i)
+		.filter((i) => !isMobile || !mobileDisabledLayouts.includes(i));
+}
 
-function loadInitialIndex(): number {
+function randomIndex(): number {
 	if (!browser) return 0;
-	const stored = Number(localStorage.getItem(STORAGE_KEY));
-	return Number.isInteger(stored) && stored >= 0 && stored < layouts.length ? stored : 0;
+	const pool = eligibleIndices();
+	return pool[Math.floor(Math.random() * pool.length)] ?? 0;
 }
 
 class LayoutState {
-	index = $state(loadInitialIndex());
+	// Randomized fresh on every page load, not persisted across reloads.
+	index = $state(randomIndex());
 
 	set(i: number) {
 		this.index = i;
-		if (browser) localStorage.setItem(STORAGE_KEY, String(i));
 	}
 
 	// Cycles to the next layout, skipping ones disabled on mobile.
 	next() {
-		const isMobile = browser && window.matchMedia('(max-width: 749px)').matches;
-		const pool = layouts
-			.map((_, i) => i)
-			.filter((i) => !isMobile || !mobileDisabledLayouts.includes(i));
+		const pool = eligibleIndices();
 		const currentPos = pool.indexOf(this.index);
 		const nextIndex = pool[(currentPos + 1) % pool.length] ?? 0;
 		this.set(nextIndex);

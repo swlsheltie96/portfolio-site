@@ -1,5 +1,5 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
+	import favicon from '$lib/assets/favicon.png';
 	import EffectsProvider from '$lib/components/effects/EffectsProvider.svelte';
 	import BrushCanvas from '$lib/components/effects/BrushCanvas.svelte';
 	import MirrorOverlay from '$lib/components/effects/MirrorOverlay.svelte';
