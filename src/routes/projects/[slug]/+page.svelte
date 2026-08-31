@@ -1,10 +1,39 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { optimizedUrlFor, srcSetFor } from '$lib/sanity/image';
 	import ProjectsListSmall from '$lib/components/ProjectsListSmall.svelte';
 	import Info from '$lib/components/Info.svelte';
 	let { data } = $props();
 	let project = $derived(data.project);
+
+	const pageTitle = $derived(`${project.title} — ${data.siteSettings?.title ?? 'SWL Studio'}`);
+	const pageDescription = $derived(
+		project.excerpt ?? `${project.title}, ${project.year}. ${project.categories?.join(', ') ?? ''}`
+	);
+	const ogImage = $derived(project.coverImage ? optimizedUrlFor(project.coverImage, 1200) : undefined);
+	const canonicalUrl = $derived(page.url.origin + page.url.pathname);
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<link rel="canonical" href={canonicalUrl} />
+
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content={pageTitle} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:url" content={canonicalUrl} />
+	{#if ogImage}
+		<meta property="og:image" content={ogImage} />
+	{/if}
+
+	<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:description" content={pageDescription} />
+	{#if ogImage}
+		<meta name="twitter:image" content={ogImage} />
+	{/if}
+</svelte:head>
 
 <div class="project-data col-4 col-tablet-4 col-mobile-5 component">
 	<div class="number-date text-body">
