@@ -45,8 +45,8 @@
 
 <div class="project-data col-4 col-tablet-4 col-mobile-5 component">
   <div class="number-date text-body">
-    <div class="col-1 col-tablet-2 col-mobile-2">{data.index}</div>
-    <div class="col-2 col-tablet-2 col-mobile-2">{project.year}</div>
+    <div class="col-1 col-tablet-2 col-mobile-4">{data.index}</div>
+    <div class="col-2 col-tablet-2 col-mobile-1">{project.year}</div>
   </div>
 
   <div class="title text-body">
@@ -92,7 +92,7 @@
           {:else if item._type === "galleryImageUrl" && item.url}
             <img src={item.url} alt={item.alt ?? ""} loading="lazy" />
           {:else if item._type === "galleryVideo" && item.url}
-            <video src={item.url} autoplay muted loop>
+            <video src={item.url} autoplay muted loop playsinline>
               {#if item.caption}
                 <track kind="captions" label={item.caption} />
               {/if}

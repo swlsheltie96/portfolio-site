@@ -6,7 +6,7 @@
   <div class="component-title text-body"> Live </div>
 
   {#if live}
-    <video autoplay muted loop class="live-portal" src={live}></video>
+    <video autoplay muted loop playsinline class="live-portal" src={live}></video>
   {/if}
 </div>
 

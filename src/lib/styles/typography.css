@@ -10,9 +10,10 @@
 
 @media (max-width: 750px) {
   :root {
-    --font-size-body: 14px;
-    --line-height-body: 18px;
-    --font-size-small: 11px;
+    --font-size-body: 16px;
+    --line-height-body: 20px;
+    --font-size-small: 14px;
+    --line-height-small: 16px;
   }
 }
 
@@ -32,5 +33,5 @@ body {
 
 .text-small {
   font-size: var(--font-size-small);
-  line-height: var(--font-size-small);
+  line-height: var(--line-height-small);
 }
