@@ -99,7 +99,8 @@
   }
   @media (max-width: 750px) {
     .info-inner {
-      display: block;
+      flex-direction: column;
+      gap: var(--spacing-sm);
     }
   }
 </style>

@@ -17,6 +17,26 @@
     project.coverImage ? optimizedUrlFor(project.coverImage, 1200) : undefined,
   );
   const canonicalUrl = $derived(page.url.origin + page.url.pathname);
+
+  let footerEl: HTMLElement | undefined = $state();
+
+  $effect(() => {
+    if (!footerEl) return;
+
+    const setFooterHeight = () => {
+      document.documentElement.style.setProperty(
+        "--footer-height",
+        `${footerEl!.offsetHeight}px`,
+      );
+    };
+
+    setFooterHeight();
+
+    const observer = new ResizeObserver(setFooterHeight);
+    observer.observe(footerEl);
+
+    return () => observer.disconnect();
+  });
 </script>
 
 <svelte:head>
@@ -45,8 +65,10 @@
 
 <div class="project-data col-4 col-tablet-4 col-mobile-5 component">
   <div class="number-date text-body">
-    <div class="col-1 col-tablet-2 col-mobile-4">{data.index}</div>
-    <div class="col-2 col-tablet-2 col-mobile-1">{project.year}</div>
+    <div class="col-1 col-tablet-2 col-mobile-4">#{data.index}</div>
+    <div class="col-3 col-tablet-2 col-mobile-1 project-year"
+      >{project.year}</div
+    >
   </div>
 
   <div class="title text-body">
@@ -144,7 +166,10 @@
     </div>
   {/if}
 </div>
-<div class="footer component col-20 col-tablet-10 col-mobile-5">
+<div
+  class="footer component col-20 col-tablet-10 col-mobile-5"
+  bind:this={footerEl}
+>
   <Info
     email={data.siteSettings.email}
     phone={data.siteSettings.phone}
@@ -248,10 +273,16 @@
     width: 100%;
   }
   .all-projects.related {
-    /* height: calc(100vh - var(--navbar-height) - var(--spacing) * 4); */
+    /* Same as .project-data's height, minus the footer's actual measured
+       height (--footer-height, set in the script), so its bottom lands
+       right where the footer begins instead of guessing a pixel constant. */
     min-height: calc(
-      calc(100vh - calc(var(--navbar-height) + var(--spacing) * 10) + 2px)
+      100vh - var(--navbar-height, 0px) - var(--spacing) * 4 - var(--spacing-sm) -
+        var(--footer-height, 0px)
     );
     margin-bottom: 0;
+  }
+  .project-year {
+    text-align: right;
   }
 </style>

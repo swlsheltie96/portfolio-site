@@ -6,6 +6,7 @@
   --font-size-body: 16px;
   --line-height-body: 18px;
   --font-size-small: 12px;
+  --line-height-small: 14px;
 }
 
 @media (max-width: 750px) {
