@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { page } from "$app/state";
   import { layoutState } from "$lib/state/layout.svelte";
   import { brushState } from "$lib/state/brush.svelte";
   import { mirrorState } from "$lib/state/mirror.svelte";
   import { clearState } from "$lib/state/clear.svelte";
   import { radioState } from "$lib/state/radio.svelte";
+  import { viewportState } from "$lib/state/viewport.svelte";
 
   let debugOn = $state(false);
   let typeface: "sans" | "serif" = $state("sans");
@@ -40,16 +41,29 @@
 
   onDestroy(() => clearInterval(homeCycleInterval));
 
-  function randomStatusText() {
-    const options = [
-      "All systems live",
-      `${Math.floor(Math.random() * 100)} online`,
-      "accepting new work",
-    ];
-    return options[Math.floor(Math.random() * options.length)];
-  }
+  const ONLINE_COUNT_MIN = 500;
+  const ONLINE_COUNT_MAX = 5_000_000;
+  const ONLINE_COUNT_RAMP = 100;
+  const ONLINE_COUNT_DURATION_MS = 600;
 
-  const statusText = randomStatusText();
+  const finalOnlineCount =
+    Math.floor(Math.random() * (ONLINE_COUNT_MAX - ONLINE_COUNT_MIN + 1)) + ONLINE_COUNT_MIN;
+  let onlineCount = $state(finalOnlineCount - ONLINE_COUNT_RAMP);
+
+  onMount(() => {
+    const startValue = finalOnlineCount - ONLINE_COUNT_RAMP;
+    const startTime = performance.now();
+
+    function tick(now: number) {
+      const progress = Math.min((now - startTime) / ONLINE_COUNT_DURATION_MS, 1);
+      onlineCount = Math.round(startValue + ONLINE_COUNT_RAMP * progress);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  });
+
+  let statusText = $derived(`${onlineCount.toLocaleString()} online`);
 
   function toggleDebug() {
     debugOn = !debugOn;
@@ -131,7 +145,7 @@
         onmouseleave={stopHomeCycle}
         ><span class="home-cycle">{homeDisplayText}</span> studio</a
       >
-      {#if page.url.pathname === "/"}
+      {#if page.url.pathname === "/" && !viewportState.isMobile}
         <button class="button" onclick={() => layoutState.next()}>
           Layout {layoutState.index + 1}
         </button>
@@ -142,14 +156,15 @@
     </div>
 
     <div class="secondary nav-inner" class:tools-open={toolsOpen}>
-      <button
-        class="button status-button status-button-desktop"
-        class:active={toolsOpen}
-        onclick={() => (toolsOpen = !toolsOpen)}
-      >
+      <span class="button status-button status-button-desktop">
         <span class="status-dot"></span>
         {statusText}
-      </button>
+      </span>
+      <button
+        class="button"
+        class:active={toolsOpen}
+        onclick={() => (toolsOpen = !toolsOpen)}>Tools</button
+      >
       <div class="secondary-buttons">
         <button class="button" onclick={() => radioState.toggle()}>
           {radioState.isPlaying
@@ -184,6 +199,12 @@
         >
         <button class="button" class:active={debugOn} onclick={toggleDebug}
           >Grid</button
+        >
+        <a
+          class="button"
+          href="https://swl-studio-v25.netlify.app/old-2-25.html"
+          target="_blank"
+          rel="noopener noreferrer">v25</a
         >
         <div class="type-controls">
           <button class="button" onclick={toggleTypeface}
@@ -232,6 +253,7 @@
   .button.active {
     background: black;
     color: white;
+    border: solid 1px #3c3c3c;
   }
 
   .home-cycle {
@@ -242,10 +264,6 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-  }
-
-  .status-button-desktop {
-    cursor: pointer;
   }
 
   /* display:contents makes this wrapper invisible to layout by default, so

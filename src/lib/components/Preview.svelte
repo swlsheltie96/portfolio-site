@@ -17,6 +17,12 @@
   let carouselIndex = $state(0);
   let isMobile = $state(false);
 
+  // Projects with no cover image/video would render blank in the carousel —
+  // skip them rather than cycling to an empty frame.
+  let mediaProjects = $derived(
+    projects.filter((project) => project.coverVideo || project.coverImage),
+  );
+
   onMount(() => {
     // Matches the site-wide mobile breakpoint (see stickyAtStart.ts).
     isMobile = window.matchMedia("(max-width: 749px)").matches;
@@ -29,17 +35,17 @@
 
     if (isMobile) {
       const interval = setInterval(() => {
-        carouselIndex = (carouselIndex + 1) % projects.length;
+        if (mediaProjects.length === 0) return;
+        carouselIndex = (carouselIndex + 1) % mediaProjects.length;
       }, 3000);
 
       return () => clearInterval(interval);
     }
   });
 
-  let displayIndex = $derived(
-    isMobile ? carouselIndex : previewState.hoveredIndex,
+  let displayProject = $derived(
+    isMobile ? mediaProjects[carouselIndex] : projects[previewState.hoveredIndex],
   );
-  let displayProject = $derived(projects[displayIndex]);
 </script>
 
 <div class="preview">

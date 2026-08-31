@@ -13,8 +13,9 @@
 	import Radio from '$lib/components/Radio.svelte';
 	import Recognition from '$lib/components/Recognition.svelte';
 	import SpeechBubble from '$lib/components/SpeechBubble.svelte';
-	import { layouts, type ComponentName, type LayoutSlot } from '$lib/layouts';
+	import { layouts, mobileLayout, type ComponentName, type LayoutSlot } from '$lib/layouts';
 	import { layoutState } from '$lib/state/layout.svelte';
+	import { viewportState } from '$lib/state/viewport.svelte';
 	import { stickyAtStart } from '$lib/components/effects/actions/stickyAtStart';
 
 	let { data } = $props();
@@ -91,7 +92,7 @@
 	{/if}
 {/snippet}
 
-{#each layouts[layoutState.index] as slot}
+{#each viewportState.isMobile ? mobileLayout : layouts[layoutState.index] as slot}
 	{@render renderSlot(slot)}
 {/each}
 

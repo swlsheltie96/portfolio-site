@@ -47,6 +47,77 @@ export type LayoutSlot = {
 // from the Layout dropdown while on mobile. Desktop/tablet are unaffected.
 export const mobileDisabledLayouts: number[] = [3];
 
+// Dedicated mobile layout (below max-width: 749px) — not one of the rotating
+// `layouts` entries. Placeholder seeded from Layout 1's content; replace with
+// a hand-designed mobile layout.
+export const mobileLayout: LayoutSlot[] = [
+  {
+    component: "Header",
+    colSpan: { mobile: 4, tablet: 10, desktop: 20 },
+    order: { mobile: 1 },
+  },
+
+  {
+    component: "ProjectsListSmall",
+    colSpan: { mobile: 5, tablet: 10, desktop: 20 },
+    // showPreview: 3,
+    order: { mobile: 2 },
+  },
+
+  {
+    component: "Preview",
+    colSpan: { mobile: 5, tablet: 10, desktop: 20 },
+    // showPreview: 3,
+    order: { mobile: 2 },
+  },
+
+  {
+    component: "About",
+    colSpan: { mobile: 5, tablet: 4, desktop: 10 },
+    order: { mobile: 4 },
+  },
+  { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
+
+  {
+    component: "CameraRoll",
+    colSpan: { mobile: 5, tablet: 9, desktop: 10 },
+    order: { mobile: 7 },
+  },
+  { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
+
+  {
+    component: "Recognition",
+    colSpan: { mobile: 5, tablet: 3, desktop: 10 },
+    order: { mobile: 5 },
+  },
+
+  { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
+
+  {
+    component: "Clients",
+    colSpan: { mobile: 5, tablet: 10, desktop: 10 },
+    order: { mobile: 6 },
+  },
+  { component: "Spacer", colSpan: { mobile: 18, tablet: 18, desktop: 10 } },
+
+  {
+    component: "News",
+    colSpan: { mobile: 5, tablet: 8, desktop: 8 },
+    order: { mobile: 8 },
+  },
+
+  {
+    component: "Live",
+    colSpan: { mobile: 1, tablet: 2, desktop: 2 },
+    order: { mobile: 1 },
+  },
+  {
+    component: "Info",
+    colSpan: { mobile: 5, tablet: 10, desktop: 20 },
+    order: { mobile: 10 },
+  },
+];
+
 export const layouts: LayoutSlot[][] = [
   [
     {
