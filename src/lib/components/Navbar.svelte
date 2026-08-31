@@ -133,7 +133,7 @@
   <div class="nav-bar col-20 col-tablet-10 col-mobile-5">
     <div class="main nav-inner">
       <a
-        class="button"
+        class="button text-small"
         href="/"
         onclick={(e) => {
           if (page.url.pathname === "/") {
@@ -146,33 +146,33 @@
         ><span class="home-cycle">{homeDisplayText}</span> studio</a
       >
       {#if page.url.pathname === "/" && !viewportState.isMobile}
-        <button class="button" onclick={() => layoutState.next()}>
+        <button class="button text-small" onclick={() => layoutState.next()}>
           Layout {layoutState.index + 1}
         </button>
       {/if}
       {#if page.data.project}
-        <span class="button">{page.data.project.title}</span>
+        <span class="button text-small">{page.data.project.title}</span>
       {/if}
     </div>
 
     <div class="secondary nav-inner" class:tools-open={toolsOpen}>
-      <span class="button status-button status-button-desktop">
+      <span class="button text-small status-button status-button-desktop">
         <span class="status-dot"></span>
         {statusText}
       </span>
       <button
-        class="button"
+        class="button text-small"
         class:active={toolsOpen}
         onclick={() => (toolsOpen = !toolsOpen)}>Tools</button
       >
       <div class="secondary-buttons">
-        <button class="button" onclick={() => radioState.toggle()}>
+        <button class="button text-small" onclick={() => radioState.toggle()}>
           {radioState.isPlaying
             ? `⏸️ ${radioState.currentSongTitle}`
             : `▶️ ${radioState.currentSongTitle}`}
         </button>
         <button
-          class="button"
+          class="button text-small"
           class:active={brushState.active}
           onclick={(e) => {
             e.stopPropagation();
@@ -180,40 +180,40 @@
           }}>Brush</button
         >
         <button
-          class="button"
+          class="button text-small"
           class:active={clearState.active}
           onclick={(e) => {
             e.stopPropagation();
             clearState.active = true;
           }}>Clear</button
         >
-        <!-- <button class="button">Redact</button>
+        <!-- <button class="button text-small">Redact</button>
 
-				<button class="button">Physics</button>
-				<button class="button">Colors</button>
-				<button class="button">Clear</button> -->
+				<button class="button text-small">Physics</button>
+				<button class="button text-small">Colors</button>
+				<button class="button text-small">Clear</button> -->
         <button
-          class="button"
+          class="button text-small"
           class:active={mirrorState.active}
           onclick={() => mirrorState.toggle()}>Mirror</button
         >
-        <button class="button" class:active={debugOn} onclick={toggleDebug}
+        <button class="button text-small" class:active={debugOn} onclick={toggleDebug}
           >Grid</button
         >
         <a
-          class="button"
+          class="button text-small"
           href="https://swl-studio-v25.netlify.app/old-2-25.html"
           target="_blank"
           rel="noopener noreferrer">v25</a
         >
         <div class="type-controls">
-          <button class="button" onclick={toggleTypeface}
+          <button class="button text-small" onclick={toggleTypeface}
             >{typeface === "serif" ? "T" : "T"}</button
           >
-          <button class="button" onclick={() => adjustFontSize(FONT_SIZE_STEP)}
+          <button class="button text-small" onclick={() => adjustFontSize(FONT_SIZE_STEP)}
             >+</button
           >
-          <button class="button" onclick={() => adjustFontSize(-FONT_SIZE_STEP)}
+          <button class="button text-small" onclick={() => adjustFontSize(-FONT_SIZE_STEP)}
             >-</button
           >
         </div>
@@ -243,6 +243,13 @@
   .nav-inner {
     display: flex;
     gap: var(--spacing);
+  }
+
+  .button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    min-width: 0;
   }
 
   .type-controls {

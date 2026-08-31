@@ -3,6 +3,9 @@
   import { urlFor } from "$lib/sanity/image";
   import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
   import { previewState } from "$lib/state/preview.svelte";
+  import favicon from "$lib/assets/favicon.png";
+
+  const fileCabinet = "/images/file-cabinet.png";
 
   let {
     projects,
@@ -11,6 +14,8 @@
       title: string;
       coverImage?: SanityImageSource;
       coverVideo?: string;
+      comingSoon?: boolean;
+      comingSoonText?: string;
     }[];
   } = $props();
 
@@ -50,15 +55,21 @@
 
 <div class="preview">
   <div class="component-title text-body"> Preview </div>
-  {#if displayProject?.coverVideo}
-    <video src={displayProject.coverVideo} autoplay muted loop playsinline></video>
-  {:else if displayProject?.coverImage}
-    <img
-      src={urlFor(displayProject.coverImage).width(800).url()}
-      alt={displayProject.title}
-      loading="lazy"
-    />
-  {/if}
+  <div class="preview-media">
+    {#if displayProject?.coverVideo}
+      <video src={displayProject.coverVideo} autoplay muted loop playsinline></video>
+    {:else if displayProject?.coverImage}
+      <img
+        src={urlFor(displayProject.coverImage).width(800).url()}
+        alt={displayProject.title}
+        loading="lazy"
+      />
+    {:else if displayProject?.comingSoon && displayProject.comingSoonText === "Archived"}
+      <img class="favicon-placeholder" src={fileCabinet} alt="" />
+    {:else if displayProject?.comingSoon}
+      <img class="favicon-placeholder" src={favicon} alt="" />
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -66,10 +77,24 @@
     aspect-ratio: 4 / 3;
   }
 
-  .preview img,
-  .preview video {
+  .preview-media {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-media img,
+  .preview-media video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .preview-media .favicon-placeholder {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
   }
 </style>

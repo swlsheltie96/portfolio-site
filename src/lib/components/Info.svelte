@@ -34,7 +34,7 @@
   );
 </script>
 
-<div class="info text-body">
+<div class="info text-small">
   <div class="component-title text-body">Information</div>
   <div class="info-inner">
     {#if email}

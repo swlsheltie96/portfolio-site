@@ -2,6 +2,7 @@
   import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
   import { previewState } from "$lib/state/preview.svelte";
   import { optimizedUrlFor } from "$lib/sanity/image";
+  import favicon from "$lib/assets/favicon.png";
 
   type GalleryItem = {
     _key: string;
@@ -66,7 +67,10 @@
             >
             {#each { length: showPreview } as _, slot (slot)}
               {@const item = project.gallery?.[slot]}
-              <span class="preview-thumb col-2 col-tablet-1 col-mobile-1">
+              <span
+                class="preview-thumb col-2 col-tablet-1 col-mobile-1"
+                class:collapsed={project.comingSoonText === "Archived"}
+              >
                 {#if item?._type === "galleryVideo" && item.url}
                   <video src={item.url} autoplay muted loop playsinline
                   ></video>
@@ -78,6 +82,8 @@
                     alt={item.alt ?? ""}
                     loading="lazy"
                   />
+                {:else if project.comingSoonText !== "Archived"}
+                  <img class="favicon-placeholder" src={favicon} alt="" />
                 {/if}
               </span>
             {/each}
@@ -122,6 +128,15 @@
 <style>
   .preview-thumb {
     aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preview-thumb.collapsed {
+    height: 0;
+    aspect-ratio: unset;
+    overflow: hidden;
   }
 
   .preview-thumb img,
@@ -132,6 +147,13 @@
     padding: var(--spacing-sm) 0;
   }
 
+  .preview-thumb .favicon-placeholder {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    padding: 0;
+  }
+
   .header-bar,
   li a,
   li .coming-soon {
@@ -139,8 +161,18 @@
     gap: var(--spacing);
   }
 
+  li a,
+  li .coming-soon {
+    border-top: dotted 1px transparent;
+    border-bottom: dotted 1px transparent;
+    box-sizing: border-box;
+  }
+
   .header-bar {
     text-transform: uppercase;
+  }
+  li .type-col {
+    text-transform: capitalize;
   }
   .project-title {
     flex: 1;
@@ -169,22 +201,22 @@
   }
   li a.active {
     /* font-weight: bold; */
-    border-bottom: dashed 1px black;
-    border-top: dashed 1px black;
+    border-bottom-style: dashed;
+    border-top-style: dashed;
+    border-bottom-color: black;
+    border-top-color: black;
     /* padding-bottom: var(--spacing); */
     /* margin-bottom: var(--spacing);
 		margin-top: var(--spacing); */
-    box-sizing: border-box;
   }
 
   li a:hover,
   li .coming-soon:hover {
-    border-bottom: dotted 1px black;
-    border-top: dotted 1px black;
+    border-bottom-color: black;
+    border-top-color: black;
     /* margin-bottom: var(--spacing); */
     /* margin-bottom: var(--spacing);
 		margin-top: var(--spacing); */
-    box-sizing: border-box;
   }
 
   @media (max-width: 749px) {
