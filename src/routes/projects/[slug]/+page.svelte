@@ -250,7 +250,7 @@
   .all-projects.related {
     /* height: calc(100vh - var(--navbar-height) - var(--spacing) * 4); */
     min-height: calc(
-      calc(100vh - calc(var(--navbar-height) + var(--spacing) * 12) + 2px)
+      calc(100vh - calc(var(--navbar-height) + var(--spacing) * 10) + 2px)
     );
     margin-bottom: 0;
   }

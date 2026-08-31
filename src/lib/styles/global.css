@@ -31,6 +31,9 @@
   vertical-align: top;
   margin-bottom: calc(var(--spacing) * 2);
 }
+.component:last-child {
+  margin-bottom: 0;
+}
 .component.inner {
   margin-right: unset;
   border: unset;
