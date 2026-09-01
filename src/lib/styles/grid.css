@@ -21,121 +21,121 @@
 
 .col-1 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 1 + (1 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 1 + (1 - 1) * var(--spacing)
   );
 }
 
 .col-2 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 2 + (2 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 2 + (2 - 1) * var(--spacing)
   );
 }
 
 .col-3 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 3 + (3 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 3 + (3 - 1) * var(--spacing)
   );
 }
 
 .col-4 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 4 + (4 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 4 + (4 - 1) * var(--spacing)
   );
 }
 
 .col-5 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 5 + (5 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 5 + (5 - 1) * var(--spacing)
   );
 }
 
 .col-6 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 6 + (6 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 6 + (6 - 1) * var(--spacing)
   );
 }
 
 .col-7 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 7 + (7 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 7 + (7 - 1) * var(--spacing)
   );
 }
 
 .col-8 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 8 + (8 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 8 + (8 - 1) * var(--spacing)
   );
 }
 
 .col-9 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 9 + (9 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 9 + (9 - 1) * var(--spacing)
   );
 }
 
 .col-10 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 10 + (10 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 10 + (10 - 1) * var(--spacing)
   );
 }
 
 .col-11 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 11 + (11 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 11 + (11 - 1) * var(--spacing)
   );
 }
 
 .col-12 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 12 + (12 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 12 + (12 - 1) * var(--spacing)
   );
 }
 
 .col-13 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 13 + (13 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 13 + (13 - 1) * var(--spacing)
   );
 }
 
 .col-14 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 14 + (14 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 14 + (14 - 1) * var(--spacing)
   );
 }
 
 .col-15 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 15 + (15 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 15 + (15 - 1) * var(--spacing)
   );
 }
 
 .col-16 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 16 + (16 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 16 + (16 - 1) * var(--spacing)
   );
 }
 
 .col-17 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 17 + (17 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 17 + (17 - 1) * var(--spacing)
   );
 }
 
 .col-18 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 18 + (18 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 18 + (18 - 1) * var(--spacing)
   );
 }
 
 .col-19 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 19 + (19 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 19 + (19 - 1) * var(--spacing)
   );
 }
 
 .col-20 {
   width: calc(
-    (((100vw - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 20 + (20 - 1) * var(--spacing)
+    ((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - ((var(--grid-columns) - 1) * var(--spacing))) / var(--grid-columns)) * 20 + (20 - 1) * var(--spacing)
   );
 }
 
@@ -150,34 +150,34 @@
  */
 @media (min-width: 750px) and (max-width: 999px) {
   .col-tablet-1 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 1 + (1 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 1 + (1 - 1) * var(--spacing));
   }
   .col-tablet-2 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 2 + (2 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 2 + (2 - 1) * var(--spacing));
   }
   .col-tablet-3 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 3 + (3 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 3 + (3 - 1) * var(--spacing));
   }
   .col-tablet-4 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 4 + (4 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 4 + (4 - 1) * var(--spacing));
   }
   .col-tablet-5 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 5 + (5 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 5 + (5 - 1) * var(--spacing));
   }
   .col-tablet-6 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 6 + (6 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 6 + (6 - 1) * var(--spacing));
   }
   .col-tablet-7 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 7 + (7 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 7 + (7 - 1) * var(--spacing));
   }
   .col-tablet-8 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 8 + (8 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 8 + (8 - 1) * var(--spacing));
   }
   .col-tablet-9 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 9 + (9 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 9 + (9 - 1) * var(--spacing));
   }
   .col-tablet-10 {
-    width: calc((((100vw - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 10 + (10 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (9 * var(--spacing))) / 10) * 10 + (10 - 1) * var(--spacing));
   }
 }
 
@@ -222,18 +222,18 @@
 
 @media (max-width: 749px) {
   .col-mobile-1 {
-    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 1 + (1 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 1 + (1 - 1) * var(--spacing));
   }
   .col-mobile-2 {
-    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 2 + (2 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 2 + (2 - 1) * var(--spacing));
   }
   .col-mobile-3 {
-    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 3 + (3 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 3 + (3 - 1) * var(--spacing));
   }
   .col-mobile-4 {
-    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 4 + (4 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 4 + (4 - 1) * var(--spacing));
   }
   .col-mobile-5 {
-    width: calc((((100vw - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 5 + (5 - 1) * var(--spacing));
+    width: calc(((((100vw - var(--scrollbar-width, 0px)) - (2 * var(--spacing))) - (4 * var(--spacing))) / 5) * 5 + (5 - 1) * var(--spacing));
   }
 }
