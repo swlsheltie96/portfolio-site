@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
+  import { pauseOffscreen } from "$lib/actions/pauseOffscreen";
 
   let { liveVideoUrls = [] }: { liveVideoUrls?: string[] } = $props();
 
@@ -21,6 +22,7 @@
       playsinline
       class="live-portal"
       src={selectedVideo}
+      use:pauseOffscreen
     ></video>
   {/if}
 </div>

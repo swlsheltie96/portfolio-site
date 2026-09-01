@@ -2,6 +2,7 @@
   import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
   import { previewState } from "$lib/state/preview.svelte";
   import { optimizedUrlFor } from "$lib/sanity/image";
+  import { pauseOffscreen } from "$lib/actions/pauseOffscreen";
   import favicon from "$lib/assets/favicon.png";
 
   const fileCabinet = "/images/file-cabinet.png";
@@ -45,7 +46,7 @@
         <span class="categories">{project.categories?.join(", ")}</span>
         <span class="preview-thumb">
           {#if project.coverVideo}
-            <video src={project.coverVideo} autoplay muted loop playsinline
+            <video src={project.coverVideo} autoplay muted loop playsinline use:pauseOffscreen
             ></video>
           {:else if project.coverImage}
             <img
@@ -78,7 +79,7 @@
         {#if project.coverVideo || project.coverImage}
           <span class="preview-thumb">
             {#if project.coverVideo}
-              <video src={project.coverVideo} autoplay muted loop playsinline
+              <video src={project.coverVideo} autoplay muted loop playsinline use:pauseOffscreen
               ></video>
             {:else if project.coverImage}
               <img

@@ -3,6 +3,7 @@
   import { optimizedUrlFor, srcSetFor } from "$lib/sanity/image";
   import ProjectsListSmall from "$lib/components/ProjectsListSmall.svelte";
   import Info from "$lib/components/Info.svelte";
+  import { pauseOffscreen } from "$lib/actions/pauseOffscreen";
   let { data } = $props();
   let project = $derived(data.project);
 
@@ -114,7 +115,7 @@
           {:else if item._type === "galleryImageUrl" && item.url}
             <img src={item.url} alt={item.alt ?? ""} loading="lazy" />
           {:else if item._type === "galleryVideo" && item.url}
-            <video src={item.url} autoplay muted loop playsinline>
+            <video src={item.url} autoplay muted loop playsinline use:pauseOffscreen>
               {#if item.caption}
                 <track kind="captions" label={item.caption} />
               {/if}

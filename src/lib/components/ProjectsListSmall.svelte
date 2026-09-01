@@ -2,6 +2,7 @@
   import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
   import { previewState } from "$lib/state/preview.svelte";
   import { optimizedUrlFor } from "$lib/sanity/image";
+  import { pauseOffscreen } from "$lib/actions/pauseOffscreen";
   import favicon from "$lib/assets/favicon.png";
 
   type GalleryItem = {
@@ -72,7 +73,7 @@
                 class:collapsed={project.comingSoonText === "Archived"}
               >
                 {#if item?._type === "galleryVideo" && item.url}
-                  <video src={item.url} autoplay muted loop playsinline
+                  <video src={item.url} autoplay muted loop playsinline use:pauseOffscreen
                   ></video>
                 {:else if item?._type === "galleryImageUrl" && item.url}
                   <img src={item.url} alt={item.alt ?? ""} loading="lazy" />
@@ -105,7 +106,7 @@
               {@const item = project.gallery?.[slot]}
               <span class="preview-thumb col-2 col-tablet-1 col-mobile-1">
                 {#if item?._type === "galleryVideo" && item.url}
-                  <video src={item.url} autoplay muted loop playsinline
+                  <video src={item.url} autoplay muted loop playsinline use:pauseOffscreen
                   ></video>
                 {:else if item?._type === "galleryImageUrl" && item.url}
                   <img src={item.url} alt={item.alt ?? ""} loading="lazy" />

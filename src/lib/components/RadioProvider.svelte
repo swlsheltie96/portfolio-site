@@ -71,4 +71,4 @@
 	});
 </script>
 
-<audio bind:this={audioPlayer}></audio>
+<audio bind:this={audioPlayer} preload="none"></audio>

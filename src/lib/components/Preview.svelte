@@ -3,6 +3,7 @@
   import { urlFor } from "$lib/sanity/image";
   import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
   import { previewState } from "$lib/state/preview.svelte";
+  import { pauseOffscreen } from "$lib/actions/pauseOffscreen";
   import favicon from "$lib/assets/favicon.png";
 
   const fileCabinet = "/images/file-cabinet.png";
@@ -57,7 +58,14 @@
   <div class="component-title text-body"> Preview </div>
   <div class="preview-media">
     {#if displayProject?.coverVideo}
-      <video src={displayProject.coverVideo} autoplay muted loop playsinline></video>
+      <video
+        src={displayProject.coverVideo}
+        autoplay
+        muted
+        loop
+        playsinline
+        use:pauseOffscreen
+      ></video>
     {:else if displayProject?.coverImage}
       <img
         src={urlFor(displayProject.coverImage).width(800).url()}
