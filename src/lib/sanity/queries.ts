@@ -8,7 +8,7 @@ export const projectOrderedSlugsQuery = groq`*[_type == "project"] | order(order
 
 export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{ title, headerText, live, email, phone, address, instagramLink, arenaLink, linkedinLink, about, clientsAndCollaborators }`;
 
-export const liveVideoUrlQuery = groq`*[_type == "siteSettings"][0].live.asset->url`;
+export const liveVideoUrlsQuery = groq`*[_type == "siteSettings"][0].live[].asset->url`;
 
 export const recognitionQuery = groq`*[_type == "siteSettings"][0].recognition`;
 

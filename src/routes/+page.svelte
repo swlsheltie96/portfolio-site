@@ -57,7 +57,7 @@
 		Preview: { projects: data.projects },
 		News: { news: data.news },
 		CameraRoll: { images: data.galleryImages },
-		Live: { live: data.live },
+		Live: { liveVideoUrls: data.liveVideoUrls },
 		Radio: {},
 		Recognition: { recognition: data.recognition },
 		SpeechBubble: {},

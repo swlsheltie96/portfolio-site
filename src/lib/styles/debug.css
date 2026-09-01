@@ -11,10 +11,10 @@
   background-origin: content-box;
   background-image: repeating-linear-gradient(
     to right,
-    #f3f3f37d 0,
+    #e2e2e2 0,
+    #e2e2e2 calc((100% / var(--grid-columns)) - var(--spacing)),
     #f3f3f37d calc((100% / var(--grid-columns)) - var(--spacing)),
-    #cacaca calc((100% / var(--grid-columns)) - var(--spacing)),
-    #0000008f calc(100% / var(--grid-columns))
+    #f3f3f37d calc(100% / var(--grid-columns))
   );
 }
 
